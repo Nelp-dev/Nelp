@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>모임 생성</title>
+</head>
+<body>
+
+    <h1>모임생성</h1>
+    <form action="/meetings/new" method="post">
+        <table>
+            <tr>
+                <td>모임이름 : </td>
+                <td>
+                    <input name="name" type="text"></input>
+                </td>
+            </tr>
+            <tr>
+                <td>장소 : </td>
+                <td>
+                    <input name="location" type="text"></input>
+                </td>
+            </tr>
+            <tr>
+                <td>시간 : </td>
+                <td>
+                    <input name="time" type="text"></input>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <input type="submit" value="생성"></input>
+                </td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>
