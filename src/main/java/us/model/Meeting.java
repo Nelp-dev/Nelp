@@ -1,5 +1,6 @@
 package us.model;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -7,6 +8,7 @@ import javax.persistence.Id;
 /**
  * Created by jihun on 2017. 2. 28..
  */
+@Entity
 public class Meeting {
 
     @Id
@@ -15,6 +17,30 @@ public class Meeting {
     private String name;
     private String location;
     private String time;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
 
     public Meeting() {
     }

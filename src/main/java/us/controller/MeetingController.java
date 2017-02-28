@@ -1,22 +1,32 @@
 package us.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import us.model.Meeting;
+import us.repository.MeetingRepository;
 
 /**
  * Created by jihun on 2017. 2. 24..
  */
+
 @Controller
-@RequestMapping(path="/meetings")
+@RequestMapping(value="/meetings")
 public class MeetingController {
-    @RequestMapping(path="/new", method = RequestMethod.GET)
-    public String getCreateMeetingForm(){
+    @Autowired
+    private MeetingRepository meetingRepository;
+
+    @RequestMapping(value="/new", method=RequestMethod.GET)
+    public String getCreateMeetingForm(Meeting meeting){
         return "create_meeting";
     }
 
-    @RequestMapping(path="/new", method = RequestMethod.POST)
-    public String createMeeting() {
+    @RequestMapping(value="/new", method=RequestMethod.POST)
+    public String createMeeting(Meeting meeting) {
+        Meeting meetingData = meetingRepository.save(meeting);
+
+        System.out.println(meetingData.toString());
         return "home";
     }
 }
