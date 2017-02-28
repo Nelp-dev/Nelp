@@ -11,6 +11,7 @@
 .springBeans
 
 ### IntelliJ IDEA ###
+classes/
 .idea
 *.iws
 *.iml
