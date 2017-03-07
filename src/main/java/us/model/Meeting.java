@@ -1,9 +1,8 @@
 package us.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by jihun on 2017. 2. 28..
@@ -17,6 +16,9 @@ public class Meeting {
     private String name;
     private String location;
     private String time;
+    @OneToMany
+    @JoinColumn(name="meeting_id")
+    private List<Participant> participantList;
 
     public String getName() {
         return name;
@@ -32,6 +34,14 @@ public class Meeting {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public List<Participant> getParticipantList() {
+        return participantList;
+    }
+
+    public void setParticipantList(List<Participant> participantList) {
+        this.participantList = participantList;
     }
 
     public String getTime() {
