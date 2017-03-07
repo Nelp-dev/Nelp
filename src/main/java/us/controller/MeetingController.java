@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import us.model.Meeting;
+import us.model.Participant;
 import us.repository.MeetingRepository;
 
 /**
@@ -29,4 +30,12 @@ public class MeetingController {
         System.out.println(meetingData.toString());
         return "home";
     }
+
+    @RequestMapping(value="/join", method=RequestMethod.GET)
+    public String getMeetingInfo(Meeting meeting, Participant participant){
+        meeting.setName("PrinceY's party");
+
+        return "join_meeting";
+    }
+
 }

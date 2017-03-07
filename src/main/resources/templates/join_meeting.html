@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>모임 참가</title>
+</head>
+<body>
+모임이름: <span th:text="${meeting.name}"></span>
+<form th:action="@{/meetings/detail}" th:object="${participant}" method="post">
+    <p>이름 : <input type="text" th:field="*{name}"/></p>
+    <p><input type="submit" value="참가하기" /></p>
+</form>
+</body>
+</html>
