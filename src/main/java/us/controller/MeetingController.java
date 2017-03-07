@@ -33,7 +33,9 @@ public class MeetingController {
 
     @RequestMapping(value="/join", method=RequestMethod.GET)
     public String getMeetingInfo(Meeting meeting, Participant participant){
-        meeting.setName("PrinceY's party");
+        Meeting myMeeting = meetingRepository.findOne(1L);
+
+        meeting.setName(myMeeting.getName());
 
         return "join_meeting";
     }
