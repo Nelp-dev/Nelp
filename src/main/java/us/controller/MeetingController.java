@@ -13,17 +13,17 @@ import us.repository.MeetingRepository;
  */
 
 @Controller
-@RequestMapping(value="/meetings")
+@RequestMapping(value = "/meetings")
 public class MeetingController {
     @Autowired
     private MeetingRepository meetingRepository;
 
-    @RequestMapping(value="/new", method=RequestMethod.GET)
-    public String getCreateMeetingForm(Meeting meeting){
+    @RequestMapping(value = "/new", method = RequestMethod.GET)
+    public String getCreateMeetingForm(Meeting meeting) {
         return "create_meeting";
     }
 
-    @RequestMapping(value="/new", method=RequestMethod.POST)
+    @RequestMapping(value = "/new", method = RequestMethod.POST)
     public String createMeeting(Meeting meeting) {
         Meeting meetingData = meetingRepository.save(meeting);
 
@@ -31,13 +31,24 @@ public class MeetingController {
         return "home";
     }
 
-    @RequestMapping(value="/join", method=RequestMethod.GET)
-    public String getMeetingInfo(Meeting meeting, Participant participant){
+    @RequestMapping(value = "/join", method = RequestMethod.GET)
+    public String getMeetingInfo(Meeting meeting, Participant participant) {
         Meeting myMeeting = meetingRepository.findOne(1L);
 
         meeting.setName(myMeeting.getName());
 
         return "join_meeting";
+    }
+
+    @RequestMapping(value = "/detail", method = RequestMethod.POST)
+    public String detailMeeting(Meeting meeting, Participant participant){
+        Meeting myMeeting = meetingRepository.findOne(1L);
+
+        meeting.setName(myMeeting.getName());
+        meeting.setLocation(myMeeting.getLocation());
+        meeting.setTime(myMeeting.getTime());
+
+        return "detail_meeting";
     }
 
 }
