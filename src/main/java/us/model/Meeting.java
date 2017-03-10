@@ -15,6 +15,7 @@ public class Meeting {
     private String name;
     private String location;
     private String time;
+    private String url;
     @OneToMany
     @JoinColumn(name="meeting_id")
     private List<Participant> participantList;
@@ -53,6 +54,14 @@ public class Meeting {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public Meeting() {
