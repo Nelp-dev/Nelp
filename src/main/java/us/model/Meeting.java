@@ -1,7 +1,6 @@
 package us.model;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,6 +18,10 @@ public class Meeting {
     @OneToMany
     @JoinColumn(name="meeting_id")
     private List<Participant> participantList;
+
+    public Long getId() {
+        return id;
+    }
 
     public String getName() {
         return name;

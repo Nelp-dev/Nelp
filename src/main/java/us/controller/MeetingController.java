@@ -2,6 +2,8 @@ package us.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import us.model.Meeting;
@@ -25,10 +27,17 @@ public class MeetingController {
 
     @RequestMapping(value = "/new", method = RequestMethod.POST)
     public String createMeeting(Meeting meeting) {
-        Meeting meetingData = meetingRepository.save(meeting);
+        meetingRepository.save(meeting);
 
-        System.out.println(meetingData.toString());
-        return "home";
+        return "redirect:/meetings/" + meeting.getId();
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public String getDetailMeeting(@PathVariable long id, Model model) {
+        Meeting meeting = meetingRepository.findOne(id);
+        model.addAttribute("meeting", meeting);
+
+        return "detail_meeting";
     }
 
     @RequestMapping(value = "/join", method = RequestMethod.GET)
@@ -39,16 +48,4 @@ public class MeetingController {
 
         return "join_meeting";
     }
-
-    @RequestMapping(value = "/detail", method = RequestMethod.POST)
-    public String detailMeeting(Meeting meeting, Participant participant){
-        Meeting myMeeting = meetingRepository.findOne(1L);
-
-        meeting.setName(myMeeting.getName());
-        meeting.setLocation(myMeeting.getLocation());
-        meeting.setTime(myMeeting.getTime());
-
-        return "detail_meeting";
-    }
-
 }

@@ -2,7 +2,8 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"> 
 <head>  <title>Detail Meeting</title> </head>
  
-<body>  <h1>Meeting List</h1> 
+<body> 
+<h1>Meeting List</h1> 
 <table> 
     <tr> 
         <td>이름</td>
@@ -22,7 +23,7 @@
           
         <td th:text="${meeting.time}"></td>
           
-        <td th:text="${participant.name}"></td>
+        <td th:text="${meeting.participantList}"></td>
          
     </tr>
      
