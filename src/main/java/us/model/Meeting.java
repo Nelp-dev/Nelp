@@ -1,6 +1,7 @@
 package us.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -16,7 +17,7 @@ public class Meeting {
     private String url;
     @OneToMany
     @JoinColumn(name="meeting_id")
-    private List<Participant> participantList;
+    private List<Participant> participantList = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -45,6 +46,8 @@ public class Meeting {
     public void setParticipantList(List<Participant> participantList) {
         this.participantList = participantList;
     }
+
+    public void addParticipant(Participant participant){ this.participantList.add(participant);}
 
     public String getTime() {
         return time;

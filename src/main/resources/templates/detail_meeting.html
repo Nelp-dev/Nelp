@@ -10,16 +10,22 @@
         <tr> 
             <td>이름</td> 
             <td>장소</td>         
-            <td>시간</td>         
-            <td>참여자</td>         
+            <td>시간</td>
         </tr>
          
         <tr> 
             <td th:text="${meeting.name}"></td>              
             <td th:text="${meeting.location}"></td>              
             <td th:text="${meeting.time}"></td>
-             <td th:text="${meeting.participantList}"></td>             
         </tr>         
+    </table>
+    <table>
+        <tr>
+            <td>참여자</td>
+        </tr>
+        <tr th:each="participant : ${meeting.participantList}">
+            <td th:text="${participant.name}"></td>
+        </tr>
     </table>
 
 <strong>모임신청 URL : </strong><a th:href="${meeting.url}" th:text="${meeting.url}"></a>
