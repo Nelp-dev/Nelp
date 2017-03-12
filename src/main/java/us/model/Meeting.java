@@ -3,9 +3,7 @@ package us.model;
 import javax.persistence.*;
 import java.util.List;
 
-/**
- * Created by jihun on 2017. 2. 28..
- */
+
 @Entity
 public class Meeting {
 

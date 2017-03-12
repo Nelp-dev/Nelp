@@ -2,9 +2,6 @@ package us.model;
 
 import javax.persistence.*;
 
-/**
- * Created by PrinceY on 2017-03-07.
- */
 @Entity
 public class Participant {
 
