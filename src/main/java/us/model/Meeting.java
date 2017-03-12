@@ -46,6 +46,8 @@ public class Meeting {
         this.participantList = participantList;
     }
 
+    public void addParticipant(Participant participant){ this.participantList.add(participant);}
+
     public String getTime() {
         return time;
     }
