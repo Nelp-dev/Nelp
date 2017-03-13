@@ -17,7 +17,7 @@ public class Meeting {
     private String url;
     @OneToMany
     @JoinColumn(name="meeting_id")
-    private List<Participant> participantList = new ArrayList<>();
+    private List<Participant> participantList = new ArrayList<Participant>();
 
     public Long getId() {
         return id;
