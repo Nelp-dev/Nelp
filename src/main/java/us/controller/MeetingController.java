@@ -10,9 +10,7 @@ import us.model.Meeting;
 import us.model.Participant;
 import us.repository.MeetingRepository;
 
-/**
- * Created by jihun on 2017. 2. 24..
- */
+
 
 @Controller
 @RequestMapping(value = "/meetings")
