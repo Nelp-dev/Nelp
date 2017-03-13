@@ -11,7 +11,7 @@ public class Participant {
     private Long id;
 
     @Column(name="meeting_id")
-    private int meetingId;
+    private Long meetingId;
 
     @Column(name="name")
     private String name;
@@ -20,11 +20,11 @@ public class Participant {
         return name;
     }
 
-    public int getMeetingId() {
+    public Long getMeetingId() {
         return meetingId;
     }
 
-    public void setMeetingId(int meetingId) {
+    public void setMeetingId(Long meetingId) {
         this.meetingId = meetingId;
     }
 
