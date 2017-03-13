@@ -17,7 +17,7 @@ public class Meeting {
     private String url;
     @OneToMany
     @JoinColumn(name="meeting_id")
-    private List<Participant> participantList = new ArrayList<Participant>();
+    private List<Participant> participantList; //= new ArrayList<Participant>();
 
     public Long getId() {
         return id;
@@ -47,7 +47,11 @@ public class Meeting {
         this.participantList = participantList;
     }
 
-    public void addParticipant(Participant participant){ this.participantList.add(participant);}
+    public void addParticipant(Participant participant){
+        if(this.participantList == null) {
+            participantList = new ArrayList<Participant>();
+        }
+        this.participantList.add(participant);}
 
     public String getTime() {
         return time;

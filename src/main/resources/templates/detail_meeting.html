@@ -2,31 +2,43 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"> 
 <head> 
     <title>Detail Meeting</title> 
-</head> 
+</head>
+ 
 <body> 
-    <h1>Meeting List</h1> 
+<h1>Meeting List</h1> 
 
-    <table> 
-        <tr> 
-            <td>이름</td> 
-            <td>장소</td>         
-            <td>시간</td>
-        </tr>
+<table> 
+    <tr> 
+        <td>이름</td>
          
-        <tr> 
-            <td th:text="${meeting.name}"></td>              
-            <td th:text="${meeting.location}"></td>              
-            <td th:text="${meeting.time}"></td>
-        </tr>         
-    </table>
-    <table>
-        <tr>
-            <td>참여자</td>
-        </tr>
-        <tr th:each="participant : ${meeting.participantList}">
-            <td th:text="${participant.name}"></td>
-        </tr>
-    </table>
+        <td>장소</td>
+         
+        <td>시간</td>
+    </tr>
+     
+    <tr> 
+        <td th:text="${meeting.name}"></td>
+          
+        <td th:text="${meeting.location}"></td>
+          
+        <td th:text="${meeting.time}"></td>
+    </tr>
+     
+</table>
+<table>
+    <tr>
+        <td>참여자</td>
+    </tr>
+    <tr th:each="participant : ${meeting.participantList}">
+        <td th:text="${participant.name}"></td>
+    </tr>
+</table>
+
+<form th:action="@{'/meetings/' + ${meeting.id} + '/join'}" th:object="${new_participant}" method="post">
+    <p>이름: <input type="text" th:field="*{name}" /></p>
+    <input type="hidden" name="id" th:value="${meeting.id}"/>
+    <p><input type="submit" value="참가하기"/></p>
+</form>
 
     <strong>모임신청 URL : </strong><a th:href="${meeting.url}" th:text="${meeting.url}"></a><br/>
 
