@@ -6,10 +6,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import us.model.Meeting;
 import us.model.Participant;
 import us.repository.MeetingRepository;
-
+import us.repository.ParticipantRepository;
 
 
 @Controller
@@ -17,6 +18,8 @@ import us.repository.MeetingRepository;
 public class MeetingController {
     @Autowired
     private MeetingRepository meetingRepository;
+    @Autowired
+    private ParticipantRepository participantRepository;
 
     @RequestMapping(value = "/new", method = RequestMethod.GET)
     public String getCreateMeetingForm(Meeting meeting) {
@@ -37,15 +40,24 @@ public class MeetingController {
     public String getDetailMeeting(@PathVariable long id, Model model) {
         Meeting meeting = meetingRepository.findOne(id);
         model.addAttribute("meeting", meeting);
+        model.addAttribute("new_participant", new Participant());
 
         return "detail_meeting";
     }
 
-    @RequestMapping(value = "/join", method = RequestMethod.GET)
-    public String getMeetingInfo(Meeting meeting, Participant participant) {
-        Meeting myMeeting = meetingRepository.findOne(1L);
+    @RequestMapping(value = "/{id}/join", method = RequestMethod.POST)
+    public String getMeetingInfo(@PathVariable long id, Participant participant, Model model) {
+        Meeting meeting = meetingRepository.findOne(id);
 
-        meeting.setName(myMeeting.getName());
+        participant.setMeetingId(meeting.getId());
+
+        meeting.addParticipant(participant);
+
+        participantRepository.save(participant);
+
+        model.addAttribute("meeting", meeting);
+
+        model.addAttribute("participant", participant);
 
         return "join_meeting";
     }

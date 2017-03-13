@@ -4,10 +4,9 @@
     <title>모임 참가</title>
 </head>
 <body>
-모임이름: <span th:text="${meeting.name}"></span>
-<form th:action="@{/meetings/detail}" th:object="${participant}" method="post">
-    <p>이름 : <input type="text" th:field="*{name}"/></p>
-    <p><input type="submit" value="참가하기" /></p>
-</form>
+<span th:text="${participant.name}"></span>님이 모임
+<span th:text="${meeting.name}"></span>에 참가하였습니다.
+<br></br>
+<a th:href="${meeting.url}" th:text="돌아가기"></a>
 </body>
 </html>
