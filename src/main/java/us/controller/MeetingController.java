@@ -22,7 +22,8 @@ public class MeetingController {
     private ParticipantRepository participantRepository;
 
     @RequestMapping(value = "/new", method = RequestMethod.GET)
-    public String getCreateMeetingForm(Meeting meeting) {
+    public String getCreateMeetingForm(Model model) {
+        model.addAttribute("meeting", new Meeting());
         return "create_meeting";
     }
 
@@ -48,15 +49,9 @@ public class MeetingController {
     @RequestMapping(value = "/{id}/join", method = RequestMethod.POST)
     public String getMeetingInfo(@PathVariable long id, Participant participant, Model model) {
         Meeting meeting = meetingRepository.findOne(id);
-
-        participant.setMeetingId(meeting.getId());
-
         meeting.addParticipant(participant);
-
         participantRepository.save(participant);
-
         model.addAttribute("meeting", meeting);
-
         model.addAttribute("participant", participant);
 
         return "join_meeting";
