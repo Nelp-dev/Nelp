@@ -29,6 +29,7 @@ public class MeetingController {
 
     @RequestMapping(value = "/new", method = RequestMethod.POST)
     public String createMeeting(Meeting meeting) {
+        System.out.println(meeting.getName());
         meetingRepository.save(meeting);
         String base_url = "http://localhost:8080/meetings/" + meeting.getId();
         meeting.setUrl(base_url);
@@ -38,7 +39,7 @@ public class MeetingController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public String getDetailMeeting(@PathVariable long id, Model model) {
+    public String getDetailMeeting(@PathVariable int id, Model model) {
         Meeting meeting = meetingRepository.findOne(id);
         model.addAttribute("meeting", meeting);
         model.addAttribute("new_participant", new Participant());
@@ -47,9 +48,10 @@ public class MeetingController {
     }
 
     @RequestMapping(value = "/{id}/join", method = RequestMethod.POST)
-    public String getMeetingInfo(@PathVariable long id, Participant participant, Model model) {
+    public String getMeetingInfo(@PathVariable int id, Participant participant, Model model) {
         Meeting meeting = meetingRepository.findOne(id);
         meeting.addParticipant(participant);
+        participant.setMeeting_id(meeting.getId());
         participantRepository.save(participant);
         model.addAttribute("meeting", meeting);
         model.addAttribute("participant", participant);

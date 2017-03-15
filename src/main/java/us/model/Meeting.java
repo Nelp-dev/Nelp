@@ -9,17 +9,22 @@ import java.util.List;
 public class Meeting {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    private Long id;
+    @Column(name="id")
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private int id;
+    @Column(name="name")
     private String name;
+    @Column(name="location")
     private String location;
+    @Column(name="time")
     private String time;
+    @Column(name="url")
     private String url;
     @OneToMany
     @JoinColumn(name="meeting_id")
     private List<Participant> participantList = new ArrayList<Participant>();
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 

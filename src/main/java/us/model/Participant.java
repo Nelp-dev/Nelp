@@ -7,13 +7,23 @@ public class Participant {
 
     @Id
     @Column(name="id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private int id;
     @Column(name="name")
     private String name;
+    @Column(name="meeting_id")
+    private int meeting_id;
 
     public String getName() {
         return name;
+    }
+
+    public int getMeeting_id() {
+        return meeting_id;
+    }
+
+    public void setMeeting_id(int meeting_id) {
+        this.meeting_id = meeting_id;
     }
 
     public void setName(String name) {
