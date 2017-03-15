@@ -29,7 +29,6 @@ public class MeetingController {
 
     @RequestMapping(value = "/new", method = RequestMethod.POST)
     public String createMeeting(Meeting meeting) {
-        System.out.println(meeting.getName());
         meetingRepository.save(meeting);
         String base_url = "http://localhost:8080/meetings/" + meeting.getId();
         meeting.setUrl(base_url);
