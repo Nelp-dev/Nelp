@@ -25,6 +25,7 @@ public class MeetingController {
     @RequestMapping(value = "/new", method = RequestMethod.GET)
     public String getCreateMeetingForm(Model model) {
         model.addAttribute("meeting", new Meeting());
+        model.addAttribute("participant", new Participant());
         return "create_meeting";
     }
 
@@ -40,7 +41,6 @@ public class MeetingController {
         }
         meeting.setUrl(base_url);
         meetingRepository.save(meeting);
-
         return "redirect:/meetings/" + meeting.getId();
     }
 
