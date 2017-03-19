@@ -27,9 +27,7 @@
             <td th:text="${participant.name}"></td>
         </tr>
     </table>
-    <form th:action="@{'/meetings/' + ${meeting.id} + '/join'}" th:object="${new_participant}" method="post">
-        <p>이름: <input type="text" th:field="*{name}" /></p>
-        <input type="hidden" name="id" th:value="${meeting.id}"/>
+    <form th:action="@{'/meetings/' + ${meeting.id} + '/join'}" method="post">
         <p><input type="submit" value="참가하기"/></p>
     </form>
     <strong>모임신청 URL : </strong><a th:href="${meeting.url}" th:text="${meeting.url}"></a><br/>

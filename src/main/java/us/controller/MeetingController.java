@@ -46,19 +46,19 @@ public class MeetingController {
     public String getDetailMeeting(@PathVariable int id, Model model) {
         Meeting meeting = meetingRepository.findOne(id);
         model.addAttribute("meeting", meeting);
-        model.addAttribute("new_participant", new Participant());
 
         return "detail_meeting";
     }
 
     @RequestMapping(value = "/{id}/join", method = RequestMethod.POST)
-    public String getMeetingInfo(@PathVariable int id, Participant participant, Model model) {
+    public String getMeetingInfo(@PathVariable int id,HttpSession session, Model model) {
+        Participant user = (Participant)session.getAttribute("user");
         Meeting meeting = meetingRepository.findOne(id);
-        meeting.addParticipant(participant);
-        participant.setMeeting_id(meeting.getId());
-        participantRepository.save(participant);
+        meeting.addParticipant(user);
+        user.setMeeting_id(meeting.getId());
+        participantRepository.save(user);
         model.addAttribute("meeting", meeting);
-        model.addAttribute("participant", participant);
+        model.addAttribute("participant", user);
 
         return "join_meeting";
     }
