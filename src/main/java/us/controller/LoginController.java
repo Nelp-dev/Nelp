@@ -39,4 +39,16 @@ public class LoginController {
         return "redirect:/";
     }
 
+    @GetMapping("/signup")
+    public String getSignUpForm(Model model){
+        model.addAttribute("participant",new Participant());
+        return "signup";
+    }
+
+    @PostMapping("/signup")
+    public String handleSignup(Participant participant){
+        participant.setMeeting_id(1); // Todo : Remove Participant Meeting Id
+        participantRepository.save(participant);
+        return "redirect:/";
+    }
 }

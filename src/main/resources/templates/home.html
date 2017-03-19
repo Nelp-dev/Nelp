@@ -11,6 +11,8 @@
     </div>
     <div th:if="${session.user}==null">
         <a href="/login" methods="GET">로그인</a>
+        <br></br>
+        <a href="/login/signup" methods="GET">회원가입</a>
     </div>
 </body>
 </html>
