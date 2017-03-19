@@ -20,9 +20,9 @@ public class Meeting {
     private String time;
     @Column(name="url")
     private String url;
-    @OneToMany
-    @JoinColumn(name="meeting_id")
-    private List<Participant> participantList = new ArrayList<Participant>();
+    @ManyToMany
+    @JoinTable(name = "meeting_has_user", joinColumns = @JoinColumn(name = "meeting_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+    private List<User> userList = new ArrayList<User>();
 
     public int getId() {
         return id;
@@ -44,15 +44,15 @@ public class Meeting {
         this.location = location;
     }
 
-    public List<Participant> getParticipantList() {
-        return participantList;
+    public List<User> getUserList() {
+        return userList;
     }
 
-    public void setParticipantList(List<Participant> participantList) {
-        this.participantList = participantList;
+    public void setUserList(List<User> userList) {
+        this.userList = userList;
     }
 
-    public void addParticipant(Participant participant){ this.participantList.add(participant); }
+    public void addUser(User user){ this.userList.add(user); }
 
     public String getTime() {
         return time;

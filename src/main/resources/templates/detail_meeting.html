@@ -23,8 +23,8 @@
         <tr>
             <td>참여자</td>
         </tr>
-        <tr th:each="participant : ${meeting.participantList}">
-            <td th:text="${participant.name}"></td>
+        <tr th:each="user : ${meeting.userList}">
+            <td th:text="${user.name}"></td>
         </tr>
     </table>
     <form th:action="@{'/meetings/' + ${meeting.id} + '/join'}" th:object="${new_participant}" method="post">
