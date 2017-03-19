@@ -27,11 +27,12 @@
             <td th:text="${participant.name}"></td>
         </tr>
     </table>
-    <form th:action="@{'/meetings/' + ${meeting.id} + '/join'}" method="post">
-        <p><input type="submit" value="참가하기"/></p>
-    </form>
+    <div th:if="${meeting.isContainParticipant(session.user)} == false">
+        <form th:action="@{'/meetings/' + ${meeting.id} + '/join'}" method="post">
+            <p><input type="submit" value="참가하기"/></p>
+        </form>
+    </div>
     <strong>모임신청 URL : </strong><a th:href="${meeting.url}" th:text="${meeting.url}"></a><br/>
-
     <a href="/" methods="GET">홈페이지로 가자</a>
 </body>
 </html>

@@ -6,7 +6,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import us.model.Meeting;
 import us.model.Participant;
 import us.repository.MeetingRepository;
@@ -34,7 +33,10 @@ public class MeetingController {
         meetingRepository.save(meeting);
         String base_url = "http://localhost:8080/meetings/" + meeting.getId();
         if(session.getAttribute("user") != null) {
-            meeting.addParticipant((Participant) session.getAttribute("user"));
+            Participant user = (Participant) session.getAttribute("user");
+            meeting.addParticipant(user);
+            user.setMeeting_id(meeting.getId());
+            participantRepository.save(user);
         }
         meeting.setUrl(base_url);
         meetingRepository.save(meeting);
