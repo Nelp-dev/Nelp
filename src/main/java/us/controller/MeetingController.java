@@ -12,6 +12,8 @@ import us.model.Participant;
 import us.repository.MeetingRepository;
 import us.repository.ParticipantRepository;
 
+import javax.servlet.http.HttpSession;
+
 
 @Controller
 @RequestMapping(value = "/meetings")

@@ -1,10 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"> 
 <head>
     <title>홈</title>
 </head>
 <body>
+    <div th:if="${session.user}!=null">
     <a href="/meetings/new" methods="GET">모임을 만들자</a>
-    <br></br>
+    </div>
+    <div th:if="${session.user}==null">
+        <a href="/login" methods="GET">로그인</a>
+    </div>
 </body>
 </html>
