@@ -7,12 +7,12 @@
     <div th:if="${session.user}!=null">
         <a href="/meetings/new" methods="GET">모임을 만들자</a>
         <br></br>
-        <a href="/login/out" methods="GET">로그아웃</a>
+        <a href="/logout" methods="GET">로그아웃</a>
     </div>
     <div th:if="${session.user}==null">
         <a href="/login" methods="GET">로그인</a>
         <br></br>
-        <a href="/login/signup" methods="GET">회원가입</a>
+        <a href="/signup" methods="GET">회원가입</a>
     </div>
 </body>
 </html>

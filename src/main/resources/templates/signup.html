@@ -4,7 +4,7 @@
     <title>Sign-Up</title>
 </head>
 <body>
-<form action="#" th:action="@{/login/signup}" th:object="${participant}" method="post">
+<form action="#" th:action="@{/signup}" th:object="${participant}" method="post">
     <p>아이디: <input type="text" th:field="*{name}" /></p>
     <p>비밀번호: <input type="password" th:field="*{password}" /></p>
     <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>

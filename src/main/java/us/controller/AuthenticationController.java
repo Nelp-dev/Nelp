@@ -12,18 +12,18 @@ import us.repository.ParticipantRepository;
 import javax.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping("/login")
-public class LoginController {
+
+public class AuthenticationController {
     @Autowired
     private ParticipantRepository participantRepository;
 
-    @GetMapping
+    @GetMapping("/login")
     public String getLoginForm(Model model){
         model.addAttribute("participant",new Participant());
         return "login";
     }
 
-    @PostMapping
+    @PostMapping("/login")
     public String handleLogin(Participant participant, HttpSession session){
         Participant user = participantRepository.findByName(participant.getName());
         if(user == null || !user.getPassword().equals(participant.getPassword())){
@@ -33,7 +33,7 @@ public class LoginController {
 
         return "redirect:/";
     }
-    @GetMapping("/out")
+    @GetMapping("/logout")
     public String handleLogout(HttpSession session){
         session.removeAttribute("user");
         return "redirect:/";
