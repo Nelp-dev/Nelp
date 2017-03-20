@@ -25,6 +25,9 @@
         </tr>
         <tr th:each="participant : ${meeting.participantList}">
             <td th:text="${participant.name}"></td>
+            <td>
+                계좌번호: <strong th:text="${participant.account_number}"></strong>
+            </td>
         </tr>
     </table>
     <div th:if="${meeting.isContainParticipant(session.user)} == false">

@@ -11,6 +11,8 @@ public class Participant {
     private int id;
     @Column(name="name")
     private String name;
+    @Column(name="account_number")
+    private String account_number;
     @Column(name="meeting_id")
     private int meeting_id;
     @Column(name="password")
@@ -38,6 +40,14 @@ public class Participant {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getAccount_number() {
+        return account_number;
+    }
+
+    public void setAccount_number(String account_number) {
+        this.account_number = account_number;
     }
 
     public Participant() {
