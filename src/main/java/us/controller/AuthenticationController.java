@@ -47,7 +47,6 @@ public class AuthenticationController {
 
     @PostMapping("/signup")
     public String handleSignup(Participant participant){
-        participant.setMeeting_id(1); // Todo : Remove Participant Meeting Id
         participantRepository.save(participant);
         return "redirect:/";
     }
