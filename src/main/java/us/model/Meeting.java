@@ -54,6 +54,10 @@ public class Meeting {
 
     public void addParticipant(Participant participant){ this.participantList.add(participant); }
 
+    public boolean isContainParticipant(Participant participant){
+        return (participant.getMeeting_id() == this.id);
+    }
+
     public String getTime() {
         return time;
     }
