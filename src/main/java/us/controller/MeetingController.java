@@ -64,4 +64,17 @@ public class MeetingController {
 
         return "join_meeting";
     }
+
+    @RequestMapping(value = "/{id}/leave", method = RequestMethod.POST)
+    public String leaveMeeting(@PathVariable int id, HttpSession session, Model model) {
+        Participant user = (Participant)session.getAttribute("user");
+        Meeting meeting = meetingRepository.findOne(id);
+        meeting.removeParticipant(user);
+        user.setMeeting_id(-1);
+        participantRepository.save(user);
+        model.addAttribute("meeting", meeting);
+        model.addAttribute("participant", user);
+
+        return "redirect:/meetings/" + meeting.getId();
+    }
 }

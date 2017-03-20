@@ -54,6 +54,12 @@ public class Meeting {
 
     public void addParticipant(Participant participant){ this.participantList.add(participant); }
 
+    public void removeParticipant(Participant participant) {
+        if(participantList.contains(participant)) {
+            participantList.remove(participant);
+        }
+    }
+
     public boolean isContainParticipant(Participant participant){
         return (participant.getMeeting_id() == this.id);
     }
