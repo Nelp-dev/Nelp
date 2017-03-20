@@ -53,7 +53,7 @@ public class MeetingController {
     }
 
     @RequestMapping(value = "/{id}/join", method = RequestMethod.POST)
-    public String getMeetingInfo(@PathVariable int id,HttpSession session, Model model) {
+    public String joinMeeting(@PathVariable int id, HttpSession session, Model model) {
         Participant user = (Participant)session.getAttribute("user");
         Meeting meeting = meetingRepository.findOne(id);
         meeting.addParticipant(user);
