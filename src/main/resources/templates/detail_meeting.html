@@ -25,10 +25,14 @@
         </tr>
         <tr th:each="participant : ${meeting.participantList}">
             <td th:text="${participant.name}"></td>
+            <td>
+                계좌번호: <strong th:text="${participant.account_number}"></strong>
+            </td>
         </tr>
     </table>
     <form th:action="@{'/meetings/' + ${meeting.id} + '/join'}" th:object="${new_participant}" method="post">
         <p>이름: <input type="text" th:field="*{name}" /></p>
+        <p>계좌번호: <input type="text" th:field="*{account_number}" /></p>
         <input type="hidden" name="id" th:value="${meeting.id}"/>
         <p><input type="submit" value="참가하기"/></p>
     </form>
