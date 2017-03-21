@@ -35,6 +35,11 @@
             <p><input type="submit" value="참가하기"/></p>
         </form>
     </div>
+    <div th:unless="${meeting.isContainParticipant(session.user)} == false">
+        <form th:action="@{'/meetings/' + ${meeting.id} + '/leave'}" method="post">
+            <p><input type="submit" value="탈퇴하기"/></p>
+        </form>
+    </div>
     <strong>모임신청 URL : </strong><a th:href="${meeting.url}" th:text="${meeting.url}"></a><br/>
     <a href="/" methods="GET">홈페이지로 가자</a>
 </body>
