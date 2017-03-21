@@ -12,6 +12,9 @@ import us.repository.ExpenseRepository;
 import us.repository.MeetingRepository;
 import us.repository.UserRepository;
 
+import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
+
 
 @Controller
 @RequestMapping(value = "/meetings")
@@ -31,15 +34,16 @@ public class MeetingController {
     }
 
     @RequestMapping(value = "/new", method = RequestMethod.POST)
-    public String createMeeting(Meeting meeting, User user) {
+    public String createMeeting(Meeting meeting,HttpSession session) {
         meetingRepository.save(meeting);
         String base_url = "http://localhost:8080/meetings/" + meeting.getId();
-        meeting.addUser(user);
+        if(session.getAttribute("user") != null) {
+            User user = (User) session.getAttribute("user");
+            meeting.addUser(user);
+            userRepository.save(user);
+        }
         meeting.setUrl(base_url);
-        userRepository.save(user);
         meetingRepository.save(meeting);
-
-
         return "redirect:/meetings/" + meeting.getId();
     }
 
@@ -47,20 +51,39 @@ public class MeetingController {
     public String getDetailMeeting(@PathVariable int id, Model model) {
         Meeting meeting = meetingRepository.findOne(id);
         model.addAttribute("meeting", meeting);
-        model.addAttribute("new_user", new User());
 
         return "detail_meeting";
     }
 
     @RequestMapping(value = "/{id}/join", method = RequestMethod.POST)
-    public String getMeetingInfo(@PathVariable int id, User user, Model model) {
+    public String joinMeeting(@PathVariable int id, HttpSession session, Model model) {
+        User sessionUser = (User)session.getAttribute("user");
+        User foundUser = userRepository.findOne(sessionUser.getId());
         Meeting meeting = meetingRepository.findOne(id);
-        meeting.addUser(user);
-        user.addMeeting(meeting);
-        userRepository.save(user);
+        meeting.addUser(foundUser);
+        foundUser.addMeeting(meeting);
+        session.setAttribute("user", foundUser);
+        meetingRepository.save(meeting);
+        userRepository.save(foundUser);
         model.addAttribute("meeting", meeting);
-        model.addAttribute("user", user);
+        model.addAttribute("user", foundUser);
 
         return "join_meeting";
+    }
+
+    @RequestMapping(value = "/{id}/leave", method = RequestMethod.POST)
+    public String leaveMeeting(@PathVariable int id, HttpSession session, Model model) {
+        User sessionUser = (User)session.getAttribute("user");
+        User foundUser = userRepository.findOne(sessionUser.getId());
+        Meeting meeting = meetingRepository.findOne(id);
+        meeting.removeUser(foundUser);
+        foundUser.leaveMeeting(meeting);
+        session.setAttribute("user", foundUser);
+        meetingRepository.save(meeting);
+        userRepository.save(foundUser);
+        model.addAttribute("meeting", meeting);
+        model.addAttribute("user", foundUser);
+
+        return "redirect:/meetings/" + meeting.getId();
     }
 }

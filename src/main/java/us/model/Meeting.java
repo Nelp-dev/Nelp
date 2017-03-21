@@ -1,5 +1,8 @@
 package us.model;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import us.repository.UserRepository;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +23,7 @@ public class Meeting {
     private String time;
     @Column(name="url")
     private String url;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "meeting_has_user", joinColumns = @JoinColumn(name = "meeting_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
     private List<User> userList = new ArrayList<User>();
 
@@ -52,7 +55,16 @@ public class Meeting {
         this.userList = userList;
     }
 
-    public void addUser(User user){ this.userList.add(user); }
+    public void addUser(User user){
+        this.userList.add(user); }
+
+    public boolean isContainUser(User user){
+        for(User foundUser : userList) {
+            if(foundUser.getId() == user.getId())
+                return true;
+        }
+        return false;
+    }
 
     public String getTime() {
         return time;
@@ -86,5 +98,9 @@ public class Meeting {
                 ", location='" + location + '\'' +
                 ", time='" + time + '\'' +
                 '}';
+    }
+
+    public void removeUser(User user) {
+        userList.remove(user);
     }
 }
