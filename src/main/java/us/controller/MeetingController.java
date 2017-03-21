@@ -13,8 +13,6 @@ import us.repository.MeetingRepository;
 import us.repository.UserRepository;
 
 import javax.servlet.http.HttpSession;
-import javax.transaction.Transactional;
-
 
 @Controller
 @RequestMapping(value = "/meetings")
@@ -23,8 +21,6 @@ public class MeetingController {
     private MeetingRepository meetingRepository;
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private ExpenseRepository expenseRepository;
 
     @RequestMapping(value = "/new", method = RequestMethod.GET)
     public String getCreateMeetingForm(Model model) {
@@ -39,6 +35,7 @@ public class MeetingController {
         String base_url = "http://localhost:8080/meetings/" + meeting.getId();
         if(session.getAttribute("user") != null) {
             User user = (User) session.getAttribute("user");
+            user.addMeeting(meeting);
             meeting.addUser(user);
             userRepository.save(user);
         }
