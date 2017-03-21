@@ -27,7 +27,7 @@
             <td th:text="${user.name}"></td>
         </tr>
     </table>
-    <form th:action="@{'/meetings/' + ${meeting.id} + '/join'}" th:object="${new_participant}" method="post">
+    <form th:action="@{'/meetings/' + ${meeting.id} + '/join'}" th:object="${new_user}" method="post">
         <p>이름: <input type="text" th:field="*{name}" /></p>
         <input type="hidden" name="id" th:value="${meeting.id}"/>
         <p><input type="submit" value="참가하기"/></p>

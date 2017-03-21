@@ -26,18 +26,17 @@ public class MeetingController {
     @RequestMapping(value = "/new", method = RequestMethod.GET)
     public String getCreateMeetingForm(Model model) {
         model.addAttribute("meeting", new Meeting());
-        model.addAttribute("participant", new Participant());
+        model.addAttribute("user", new User());
         return "create_meeting";
     }
 
     @RequestMapping(value = "/new", method = RequestMethod.POST)
-    public String createMeeting(Meeting meeting, Participant participant) {
+    public String createMeeting(Meeting meeting, User user) {
         meetingRepository.save(meeting);
         String base_url = "http://localhost:8080/meetings/" + meeting.getId();
-        participant.setMeeting_id(meeting.getId());
-        meeting.addParticipant(participant);
+        meeting.addUser(user);
         meeting.setUrl(base_url);
-        participantRepository.save(participant);
+        userRepository.save(user);
         meetingRepository.save(meeting);
 
 
@@ -48,7 +47,7 @@ public class MeetingController {
     public String getDetailMeeting(@PathVariable int id, Model model) {
         Meeting meeting = meetingRepository.findOne(id);
         model.addAttribute("meeting", meeting);
-        model.addAttribute("new_participant", new User());
+        model.addAttribute("new_user", new User());
 
         return "detail_meeting";
     }
@@ -60,7 +59,7 @@ public class MeetingController {
         user.addMeeting(meeting);
         userRepository.save(user);
         model.addAttribute("meeting", meeting);
-        model.addAttribute("participant", user);
+        model.addAttribute("user", user);
 
         return "join_meeting";
     }
