@@ -1,5 +1,8 @@
 package us.model;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import us.repository.UserRepository;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +23,9 @@ public class Meeting {
     private String time;
     @Column(name="url")
     private String url;
-    @OneToMany
-    @JoinColumn(name="meeting_id")
-    private List<Participant> participantList = new ArrayList<Participant>();
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "meeting_has_user", joinColumns = @JoinColumn(name = "meeting_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+    private List<User> userList = new ArrayList<User>();
 
     public int getId() {
         return id;
@@ -44,24 +47,23 @@ public class Meeting {
         this.location = location;
     }
 
-    public List<Participant> getParticipantList() {
-        return participantList;
+    public List<User> getUserList() {
+        return userList;
     }
 
-    public void setParticipantList(List<Participant> participantList) {
-        this.participantList = participantList;
+    public void setUserList(List<User> userList) {
+        this.userList = userList;
     }
 
-    public void addParticipant(Participant participant){ this.participantList.add(participant); }
+    public void addUser(User user){
+        this.userList.add(user); }
 
-    public void removeParticipant(Participant participant) {
-        if(participantList.contains(participant)) {
-            participantList.remove(participant);
+    public boolean isContainUser(User user){
+        for(User foundUser : userList) {
+            if(foundUser.getId() == user.getId())
+                return true;
         }
-    }
-
-    public boolean isContainParticipant(Participant participant){
-        return (participant.getMeeting_id() == this.id);
+        return false;
     }
 
     public String getTime() {
@@ -96,5 +98,9 @@ public class Meeting {
                 ", location='" + location + '\'' +
                 ", time='" + time + '\'' +
                 '}';
+    }
+
+    public void removeUser(User user) {
+        userList.remove(user);
     }
 }

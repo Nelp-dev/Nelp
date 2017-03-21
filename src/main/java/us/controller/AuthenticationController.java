@@ -5,8 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import us.model.Participant;
-import us.repository.ParticipantRepository;
+import us.model.User;
+import us.repository.UserRepository;
 
 import javax.servlet.http.HttpSession;
 
@@ -14,21 +14,21 @@ import javax.servlet.http.HttpSession;
 
 public class AuthenticationController {
     @Autowired
-    private ParticipantRepository participantRepository;
+    private UserRepository userRepository;
 
     @GetMapping("/login")
     public String getLoginForm(Model model){
-        model.addAttribute("participant",new Participant());
+        model.addAttribute("user",new User());
         return "login";
     }
 
     @PostMapping("/login")
-    public String handleLogin(Participant participant, HttpSession session){
-        Participant user = participantRepository.findByName(participant.getName());
-        if(user == null || !user.getPassword().equals(participant.getPassword())){
+    public String handleLogin(User loginUser, HttpSession session){
+        User foundUser = userRepository.findOne(loginUser.getId());
+        if(foundUser == null || !foundUser.getPassword().equals(loginUser.getPassword())){
             return "redirect:/login";
         }
-        session.setAttribute("user",user);
+        session.setAttribute("user",foundUser);
 
         return "redirect:/";
     }
@@ -40,13 +40,13 @@ public class AuthenticationController {
 
     @GetMapping("/signup")
     public String getSignUpForm(Model model){
-        model.addAttribute("participant",new Participant());
+        model.addAttribute("user",new User());
         return "signup";
     }
 
     @PostMapping("/signup")
-    public String handleSignup(Participant participant){
-        participantRepository.save(participant);
+    public String handleSignup(User user){
+        userRepository.save(user);
         return "redirect:/";
     }
 }
