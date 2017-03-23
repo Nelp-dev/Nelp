@@ -3,12 +3,9 @@ package us.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import us.model.Meeting;
 import us.model.User;
-import us.repository.ExpenseRepository;
 import us.repository.MeetingRepository;
 import us.repository.UserRepository;
 
@@ -22,14 +19,14 @@ public class MeetingController {
     @Autowired
     private UserRepository userRepository;
 
-    @RequestMapping(value = "/new", method = RequestMethod.GET)
+    @GetMapping(value = "/new")
     public String getCreateMeetingForm(Model model) {
         model.addAttribute("meeting", new Meeting());
         model.addAttribute("user", new User());
         return "create_meeting";
     }
 
-    @RequestMapping(value = "/new", method = RequestMethod.POST)
+    @PostMapping(value = "/new")
     public String createMeeting(Meeting meeting,HttpSession session) {
         meetingRepository.save(meeting);
         String base_url = "http://localhost:8080/meetings/" + meeting.getId();
@@ -44,7 +41,7 @@ public class MeetingController {
         return "redirect:/meetings/" + meeting.getId();
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @GetMapping(value = "/{id}")
     public String getDetailMeeting(@PathVariable int id, Model model) {
         Meeting meeting = meetingRepository.findOne(id);
         model.addAttribute("meeting", meeting);
@@ -52,7 +49,7 @@ public class MeetingController {
         return "detail_meeting";
     }
 
-    @RequestMapping(value = "/{id}/join", method = RequestMethod.POST)
+    @PostMapping(value = "/{id}/join")
     public String joinMeeting(@PathVariable int id, HttpSession session, Model model) {
         User sessionUser = (User)session.getAttribute("user");
         User foundUser = userRepository.findOne(sessionUser.getId());
@@ -68,7 +65,7 @@ public class MeetingController {
         return "join_meeting";
     }
 
-    @RequestMapping(value = "/{id}/leave", method = RequestMethod.POST)
+    @PostMapping(value = "/{id}/leave")
     public String leaveMeeting(@PathVariable int id, HttpSession session, Model model) {
         User sessionUser = (User)session.getAttribute("user");
         User foundUser = userRepository.findOne(sessionUser.getId());
