@@ -6,7 +6,6 @@ import java.util.List;
 
 @Entity
 public class User {
-
     @Id
     @Column(name="id")
     private int id;
@@ -16,8 +15,8 @@ public class User {
     private String account_number;
     @Column(name="password")
     private String password;
-    @ManyToMany(mappedBy = "userList")
-    private List<Meeting> meetingList = new ArrayList<Meeting>();
+    @OneToMany(mappedBy = "user_id")
+    private List<Participation> participationList = new ArrayList<>();
 
     public int getId() {
         return id;
@@ -31,8 +30,8 @@ public class User {
         return name;
     }
 
-    public List<Meeting> getMeetingList() {
-        return meetingList;
+    public List<Participation> getParticipationList() {
+        return participationList;
     }
 
     public String getAccount_number() {
@@ -51,11 +50,7 @@ public class User {
         this.password = password;
     }
 
-    public void setMeetingList(List<Meeting> meetingList) {
-        this.meetingList = meetingList;
-    }
-
-    public void addMeeting(Meeting meeting){ this.meetingList.add(meeting); }
+    public void addParticipantion(Participation participation){ this.participationList.add(participation); }
 
     public void setName(String name) {
         this.name = name;
@@ -68,7 +63,11 @@ public class User {
         this.name = name;
     }
 
-    public void leaveMeeting(Meeting meeting) {
-        meetingList.remove(meeting);
+    public void participateMeeting(Meeting meeting) {
+
     }
+
+    //public void leaveMeeting(Participation participation {
+    //participationList.remove(participation);
+    //}
 }

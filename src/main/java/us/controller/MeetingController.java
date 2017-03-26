@@ -31,10 +31,11 @@ public class MeetingController {
         meetingRepository.save(meeting);
         String base_url = "http://localhost:8080/meetings/" + meeting.getId();
         if(session.getAttribute("user") != null) {
-            User user = (User) session.getAttribute("user");
-            user.addMeeting(meeting);
-            meeting.addUser(user);
-            userRepository.save(user);
+//            User user = (User) session.getAttribute("user");
+//            user.participate(meeting);
+//            user.addMeeting(meeting);
+//            meeting.addUser(user);
+//            userRepository.save(user);
         }
         meeting.setUrl(base_url);
         meetingRepository.save(meeting);
@@ -54,8 +55,8 @@ public class MeetingController {
         User sessionUser = (User)session.getAttribute("user");
         User foundUser = userRepository.findOne(sessionUser.getId());
         Meeting meeting = meetingRepository.findOne(id);
-        meeting.addUser(foundUser);
-        foundUser.addMeeting(meeting);
+        //meeting.addUser(foundUser);
+        //foundUser.addMeeting(meeting);
         session.setAttribute("user", foundUser);
         meetingRepository.save(meeting);
         userRepository.save(foundUser);
@@ -71,7 +72,7 @@ public class MeetingController {
         User foundUser = userRepository.findOne(sessionUser.getId());
         Meeting meeting = meetingRepository.findOne(id);
         meeting.removeUser(foundUser);
-        foundUser.leaveMeeting(meeting);
+        //foundUser.leaveMeeting(meeting);
         session.setAttribute("user", foundUser);
         meetingRepository.save(meeting);
         userRepository.save(foundUser);
