@@ -1,13 +1,35 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
+    <meta charset="utf-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet"></link>
+    <!-- Custom styles for this template -->
+    <link th:href="@{/css/signin.css}" rel="stylesheet"></link>
+
     <title>Login</title>
 </head>
 <body>
-<form action="#" th:action="@{/login}" th:object="${user}" method="post">
-    <p>아이디: <input type="text" th:field="*{id}" /></p>
-    <p>비밀번호: <input type="password" th:field="*{password}" /></p>
-    <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
-</form>
+
+<div class="container">
+
+    <form class="form-signin" action="#" th:action="@{/login}" th:object="${user}" method="post">
+        <h2 class="form-signin-heading">Please Login</h2>
+        <label for="inputEmail" class="sr-only">Email address</label>
+        <input type="text" th:field="*{id}" id="inputEmail" class="form-control" placeholder="Email address" required="required" autofocus="autofocus"/>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" th:field="*{password}" id="inputPassword" class="form-control" placeholder="Password" required="required"/>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" value="remember-me"/> Remember me
+            </label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+        <button class="btn btn-lg btn-primary btn-block" type="reset">Reset</button>
+    </form>
+
+</div> <!-- /container -->
+
 </body>
 </html>
