@@ -28,3 +28,7 @@ nbdist/
 ### Database data ###
 *.mwb
 *.mwb.bak
+
+
+### Mac File
+*.DS_Store
