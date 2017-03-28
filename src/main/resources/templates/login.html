@@ -1,13 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="utf-8"></meta>
-    <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
-    <!-- Bootstrap core CSS -->
-    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet"></link>
-    <!-- Custom styles for this template -->
-    <link th:href="@{/css/signin.css}" rel="stylesheet"></link>
-
+    <head th:include="include/header :: header"></head>
+    <link href="/css/signin.css" rel="stylesheet"></link>
     <title>Login</title>
 </head>
 <body>
