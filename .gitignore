@@ -32,3 +32,6 @@ nbdist/
 
 ### Mac File
 *.DS_Store
+
+### Chromedriver
+driver/
