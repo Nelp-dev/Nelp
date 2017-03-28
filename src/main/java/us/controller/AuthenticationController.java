@@ -11,7 +11,6 @@ import us.repository.UserRepository;
 import javax.servlet.http.HttpSession;
 
 @Controller
-
 public class AuthenticationController {
     @Autowired
     private UserRepository userRepository;
@@ -28,10 +27,11 @@ public class AuthenticationController {
         if(foundUser == null || !foundUser.getPassword().equals(loginUser.getPassword())){
             return "redirect:/login";
         }
-        session.setAttribute("user",foundUser);
+        session.setAttribute("user", foundUser);
 
         return "redirect:/";
     }
+
     @GetMapping("/logout")
     public String handleLogout(HttpSession session){
         session.removeAttribute("user");
