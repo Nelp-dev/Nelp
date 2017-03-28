@@ -15,8 +15,10 @@ public class User {
     private String account_number;
     @Column(name="password")
     private String password;
-    @OneToMany(mappedBy = "user_id")
+    @OneToMany(mappedBy = "user")
     private List<Participation> participationList = new ArrayList<>();
+
+    public User() {}
 
     public int getId() {
         return id;
@@ -30,8 +32,8 @@ public class User {
         return name;
     }
 
-    public List<Participation> getParticipationList() {
-        return participationList;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getAccount_number() {
@@ -50,24 +52,18 @@ public class User {
         this.password = password;
     }
 
-    public void addParticipantion(Participation participation){ this.participationList.add(participation); }
-
-    public void setName(String name) {
-        this.name = name;
+    public List<Participation> getParticipationList() {
+        return participationList;
     }
 
-    public User() {
+    public void setParticipationList(List<Participation> participationList) {
+        this.participationList = participationList;
     }
 
-    public User(String name) {
-        this.name = name;
+    public void addParticipation(Participation participation) {
+        this.participationList.add(participation);
     }
 
-    public void participateMeeting(Meeting meeting) {
+    public void removeParticipation(Participation participation) { this.participationList.remove(participation); }
 
-    }
-
-    //public void leaveMeeting(Participation participation {
-    //participationList.remove(participation);
-    //}
 }
