@@ -1,5 +1,7 @@
 package us.model;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +11,9 @@ public class User {
     @Id
     @Column(name="id")
     private int id;
+    @NotEmpty
+    @Column(name="ssoId", unique = true, nullable = false)
+    private String ssoId;
     @Column(name="name")
     private String name;
     @Column(name="account_number")
@@ -66,4 +71,11 @@ public class User {
 
     public void removeParticipation(Participation participation) { this.participationList.remove(participation); }
 
+    public String getSso_id() {
+        return ssoId;
+    }
+
+    public void setSso_id(String sso_id) {
+        this.ssoId = sso_id;
+    }
 }
