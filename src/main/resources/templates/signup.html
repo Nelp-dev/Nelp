@@ -5,7 +5,7 @@
 </head>
 <body>
 <form action="#" th:action="@{/signup}" th:object="${user}" method="post">
-    <p>아이디: <input type="number" th:field="*{id}" /></p>
+    <p>아이디: <input type="email" th:field="*{sso_id}" /></p>
     <p>이름: <input type="text" th:field="*{name}" /></p>
     <p>비밀번호: <input type="password" th:field="*{password}" /></p>
     <p>계좌번호 <input type="text" th:field="*{account_number}" /></p>
