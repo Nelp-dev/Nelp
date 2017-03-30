@@ -1,19 +1,17 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <head th:include="include/header :: header"></head>
-    <link href="/css/signin.css" rel="stylesheet"></link>
+    <head th:include="include/header :: header"/>
+    <link href="/css/default.css" rel="stylesheet" />
     <title>Login</title>
 </head>
 <body>
 
 <div class="container">
 
-    <form class="form-signin" action="#" th:action="@{/login}" th:object="${user}" method="post">
-        <h2 class="form-signin-heading">Please Login</h2>
-        <label for="inputEmail" class="sr-only">Email address</label>
+    <form class="form-default" action="#" th:action="@{/login}" th:object="${user}" method="post">
+        <h2 class="form-heading">Please Login</h2>
         <input type="text" th:field="*{id}" id="inputEmail" class="form-control" placeholder="Email address" required="required" autofocus="autofocus"/>
-        <label for="inputPassword" class="sr-only">Password</label>
         <input type="password" th:field="*{password}" id="inputPassword" class="form-control" placeholder="Password" required="required"/>
         <div class="checkbox">
             <label>
@@ -21,7 +19,7 @@
             </label>
         </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
-        <button class="btn btn-lg btn-primary btn-block" type="reset">Reset</button>
+        <button class="btn btn-lg btn-warning btn-block" type="reset">Reset</button>
     </form>
 
 </div> <!-- /container -->
