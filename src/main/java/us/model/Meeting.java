@@ -87,7 +87,7 @@ public class Meeting {
 
     public boolean isParticipant(User user){
         for(Participation participation : participationList) {
-            if(participation.getUser().getId() == user.getId())
+            if(participation.getUser().getSsoId().equals(user.getSsoId()))
                 return true;
         }
         return false;

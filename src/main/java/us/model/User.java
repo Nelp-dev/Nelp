@@ -1,18 +1,16 @@
 package us.model;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 public class User {
     @Id
-    @Column(name="id")
-    private int id;
-    @NotEmpty
-    @Column(name="ssoId", unique = true, nullable = false)
+    @Column(name="ssoId")
     private String ssoId;
     @Column(name="name")
     private String name;
@@ -25,12 +23,12 @@ public class User {
 
     public User() {}
 
-    public int getId() {
-        return id;
+    public String getSsoId() {
+        return ssoId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setSsoId(String ssoId) {
+        this.ssoId = ssoId;
     }
 
     public String getName() {
@@ -70,12 +68,5 @@ public class User {
     }
 
     public void removeParticipation(Participation participation) { this.participationList.remove(participation); }
-
-    public String getSsoId() {
-        return ssoId;
-    }
-
-    public void setSsoId(String ssoId) {
-        this.ssoId = ssoId;
-    }
+    
 }
