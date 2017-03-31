@@ -37,7 +37,7 @@ public class HomePageTest {
     @Test
     public void test_home_login(){
         driver.get(baseURL);
-        driver.findElement(By.id("loginnbtn")).click();
+        driver.findElement(By.id("login_btn")).click();
         Assert.assertThat(driver.getCurrentUrl(),is(baseURL+"login"));
     }
 
