@@ -4,10 +4,10 @@ import java.io.Serializable;
 
 public class ParticipationId implements Serializable {
     private int meeting;
-    private int user;
+    private String user;
 
     public ParticipationId() { }
-    public ParticipationId(int meeting, int user) {
+    public ParticipationId(int meeting, String user) {
         this.meeting = meeting;
         this.user = user;
     }
