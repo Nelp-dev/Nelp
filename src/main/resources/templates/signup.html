@@ -10,7 +10,7 @@
 <div class="container">
     <form class="form-default" action="#" th:action="@{/signup}" th:object="${user}" method="post">
         <h2 class="form-heading">Sign Up</h2>
-        <input class="form-control" type="number" th:field="*{id}" placeholder="ID" required="required" />
+        <input class="form-control" type="number" th:field="*{ssoId}" placeholder="ID" required="required" />
         <input class="form-control" type="text" th:field="*{name}" placeholder="Name"/>
         <input class="form-control" type="password" th:field="*{password}" placeholder="Password"/>
         <input class="form-control" type="text" th:field="*{account_number}" placeholder="Account Number"/>
