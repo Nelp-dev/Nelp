@@ -8,10 +8,10 @@
 <body>
 
 <div class="container">
-
-    <form class="form-default" action="#" th:action="@{/login}" th:object="${user}" method="post">
+   <form class="form-default" action="#" th:action="@{/login}" th:object="${user}" method="post">
         <h2 class="form-heading">Please Login</h2>
-        <input type="text" th:field="*{id}" id="inputEmail" class="form-control" placeholder="Email address" required="required" autofocus="autofocus"/>
+        <input type="email" th:field="*{ssoId}" id="inputEmail" class="form-control" placeholder="Email address" required="required" autofocus="autofocus"/>
+
         <input type="password" th:field="*{password}" id="inputPassword" class="form-control" placeholder="Password" required="required"/>
         <div class="checkbox">
             <label>
