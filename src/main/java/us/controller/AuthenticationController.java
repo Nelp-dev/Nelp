@@ -23,7 +23,7 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public String handleLogin(User loginUser, HttpSession session){
-        User foundUser = userRepository.findBySsoId(loginUser.getSsoId());
+        User foundUser = userRepository.findOne(loginUser.getSsoId());
         if(foundUser == null || !foundUser.getPassword().equals(loginUser.getPassword())){
             return "redirect:/login";
         }

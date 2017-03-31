@@ -37,14 +37,14 @@ public class HomePageTest {
     @Test
     public void test_home_login(){
         driver.get(baseURL);
-        driver.findElement(By.id("login")).click();
+        driver.findElement(By.id("loginnbtn")).click();
         Assert.assertThat(driver.getCurrentUrl(),is(baseURL+"login"));
     }
 
     @Test
     public void test_home_signup(){
         driver.get(baseURL);
-        driver.findElement(By.id("signup")).click();
+        driver.findElement(By.id("signup_btn")).click();
         Assert.assertThat(driver.getCurrentUrl(),is(baseURL+"signup"));
     }
 }
