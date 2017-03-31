@@ -18,7 +18,7 @@ public class Meeting {
     private String time;
     @Column(name="url")
     private String url;
-    @OneToMany(mappedBy = "meeting")
+    @OneToMany(mappedBy="meeting")
     private List<Participation> participationList = new ArrayList<>();
 
 
