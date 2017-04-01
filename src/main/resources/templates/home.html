@@ -15,13 +15,13 @@
                         <nav>
                             <ul class="nav masthead-nav" th:if="${session.user}==null">
                                 <li class="active"><a href="#">Home</a></li>
-                                <li><a id="login" href="/login" methods="GET">로그인</a></li>
-                                <li><a id="signup" href="/signup" methods="GET">회원가입</a></li>
+                                <li><a id="login_btn" href="/login" methods="GET" >로그인</a></li>
+                                <li><a id="signup_btn" href="/signup" methods="GET">회원가입</a></li>
                             </ul>
                             <ul class="nav masthead-nav" th:if="${session.user}!=null">
                                 <li class="active"><a href="#">Home</a></li>
-                                <li><a id="meeting_new" href="/meetings/new" methods="GET">모임을 만들자</a></li>
-                                <li><a id="logout" href="/logout" methods="GET">로그아웃</a></li>
+                                <li><a id="meeting_new_btn" href="/meetings/new" methods="GET">모임을 만들자</a></li>
+                                <li><a id="logout_btn" href="/logout" methods="GET">로그아웃</a></li>
                             </ul>
                         </nav>
                     </div>

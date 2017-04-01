@@ -20,9 +20,9 @@
              </thead>
             <tbody>
                 <tr> 
-                    <td th:text="${meeting.name}"></td>              
-                    <td th:text="${meeting.location}"></td>              
-                    <td th:text="${meeting.time}"></td>
+                    <td id="meeting_name" th:text="${meeting.name}"></td>              
+                    <td id="meeting_location" th:text="${meeting.location}"></td>              
+                    <td id="meeting_time" th:text="${meeting.time}"></td>
                 </tr>
             </tbody> 
         </table>
@@ -35,14 +35,14 @@
             </thead>
             <tbody>
                 <tr th:each="participant : ${participant_list}">
-                    <td th:text="${participant.name}"></td>
+                    <td id="meeting_participant" th:text="${participant.name}"></td>
                     <td>
                         <strong th:text="${participant.account_number}"></strong>
                     </td>
                 </tr>
             </tbody>
         </table>
-        <strong>모임신청 URL : </strong><a th:href="${meeting.url}" th:text="${meeting.url}"></a><br/>
+        <strong>모임신청 URL : </strong><a id="meeting_url" th:href="${meeting.url}" th:text="${meeting.url}"></a><br/>
         <br/>
         <div th:if="${meeting.isParticipant(session.user)}">
             <form th:action="@{'/meetings/' + ${meeting.id} + '/leave'}" method="post">

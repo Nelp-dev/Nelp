@@ -23,6 +23,13 @@ public class User {
 
     public User() {}
 
+    public User(String ssoId, String name, String account_number, String password) {
+        this.ssoId = ssoId;
+        this.name = name;
+        this.account_number = account_number;
+        this.password = password;
+    }
+
     public String getSsoId() {
         return ssoId;
     }

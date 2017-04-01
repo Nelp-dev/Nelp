@@ -48,7 +48,7 @@ public class MeetingController {
         meetingRepository.save(meeting);
 
         User user = (User)session.getAttribute("user");
-        User findUser = userRepository.findBySsoId(user.getSsoId());
+        User findUser = userRepository.findOne(user.getSsoId());
         participate(meeting, findUser);
 
         return "redirect:/meetings/" + meeting.getId();
@@ -66,7 +66,7 @@ public class MeetingController {
     @PostMapping(value = "/{id}/join")
     public String joinMeeting(@PathVariable int id, HttpSession session, Model model) {
         User sessionUser = (User)session.getAttribute("user");
-        User user = userRepository.findBySsoId(sessionUser.getSsoId());
+        User user = userRepository.findOne(sessionUser.getSsoId());
         Meeting meeting = meetingRepository.findOne(id);
         participate(meeting, user);
 
@@ -79,7 +79,7 @@ public class MeetingController {
     @PostMapping(value = "/{id}/leave")
     public String leaveMeeting(@PathVariable int id, HttpSession session, Model model) {
         User sessionUser = (User)session.getAttribute("user");
-        User user = userRepository.findBySsoId(sessionUser.getSsoId());
+        User user = userRepository.findOne(sessionUser.getSsoId());
         Meeting meeting = meetingRepository.findOne(id);
         Participation participation = participationRepository.findOne(new ParticipationId(meeting.getId(), user.getSsoId()));
         leave(meeting, user, participation);
