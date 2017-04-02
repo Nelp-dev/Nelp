@@ -1,18 +1,22 @@
 package us.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @IdClass(ParticipationId.class)
-public class Participation{
+public class Participation {
     @Id
     @ManyToOne
-    @JoinColumn(name = "meeting_id")
+    @JoinColumn(name="meeting_id")
     private Meeting meeting;
     @Id
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name="user_id")
     private User user;
+    @OneToMany(mappedBy="participation")
+    private List<Payment> paymentList = new ArrayList<>();
 
     public Participation() { }
 
