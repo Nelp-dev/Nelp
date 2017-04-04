@@ -14,6 +14,8 @@ public class User {
     private String ssoId;
     @Column(name="name")
     private String name;
+    @Column(name="account_bank")
+    private String account_bank;
     @Column(name="account_number")
     private String account_number;
     @Column(name="password")
@@ -75,5 +77,12 @@ public class User {
     }
 
     public void removeParticipation(Participation participation) { this.participationList.remove(participation); }
-    
+
+    public String getAccount_bank() {
+        return account_bank;
+    }
+
+    public void setAccount_bank(String account_bank) {
+        this.account_bank = account_bank;
+    }
 }

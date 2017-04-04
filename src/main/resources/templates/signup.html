@@ -6,18 +6,23 @@
     <title>Sign-Up</title>
 </head>
 <body>
-
 <div class="container">
     <form class="form-default" action="#" th:action="@{/signup}" th:object="${user}" method="post">
         <h2 class="form-heading">Sign Up</h2>
         <input class="form-control" id="signup_ssoId" type="email" th:field="*{ssoId}" placeholder="ID" required="required" />
         <input class="form-control" id="signup_name" type="text" th:field="*{name}" placeholder="Name"/>
         <input class="form-control" id="signup_password" type="password" th:field="*{password}" placeholder="Password"/>
+        <div class="form-control">
+        <select  id="signup_account_bank" th:field="*{account_bank}">
+            <option value="shinhan" option="selected">신한</option>
+            <option value="woorie">우리</option>
+            <option value="nonghyup">농협</option>
+        </select>
         <input class="form-control" id="signup_account_number" type="text" th:field="*{account_number}" placeholder="Account Number"/>
+        </div>
         <button class="btn btn-lg btn-primary btn-block top-button" id="signup_submit_btn" type="submit">Submit</button>
         <button class="btn btn-lg btn-warning btn-block" id="signup_reset_btn" type="reset">Reset</button>
     </form>
 </div>
-
 </body>
 </html>
