@@ -14,21 +14,18 @@ import static org.hamcrest.CoreMatchers.is;
 public class HomePageTest extends BaseTest {
     @Test
     public void test_home_title(){
-        driver.get(baseURL);
         Assert.assertThat(driver.getTitle(),is("Nelp"));
     }
 
     @Test
     public void test_home_login(){
-        driver.get(baseURL);
         driver.findElement(By.id("login_btn")).click();
-        Assert.assertThat(driver.getCurrentUrl(),is(baseURL+"login"));
+        Assert.assertThat(driver.getCurrentUrl(),is(BASE_URL+"login"));
     }
 
     @Test
     public void test_home_signup(){
-        driver.get(baseURL);
         driver.findElement(By.id("signup_btn")).click();
-        Assert.assertThat(driver.getCurrentUrl(),is(baseURL+"signup"));
+        Assert.assertThat(driver.getCurrentUrl(),is(BASE_URL+"signup"));
     }
 }
