@@ -1,13 +1,10 @@
 package us;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -18,26 +15,17 @@ import static org.hamcrest.CoreMatchers.is;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class MeetingTest {
-    private WebDriver driver;
-    private String baseURL = "http://localhost:8080/";
+public class MeetingTest extends BaseTest{
     @Autowired
     private UserRepository userRepository;
     private User test_meeting_maker;
 
-    @Before
+    @Override
     public void setUp(){
-        System.setProperty("webdriver.chrome.driver", "src/test/driver/chromedriver");
-        driver = new ChromeDriver();
-
+        super.setUp();
         test_meeting_maker = new User("test@email.com", "test meeting maker", "test account number", "test password");
         if(!userRepository.exists(test_meeting_maker.getSsoId()))
             userRepository.save(test_meeting_maker);
-    }
-
-    @After
-    public void tearDown(){
-        driver.quit();
     }
 
     @Test
