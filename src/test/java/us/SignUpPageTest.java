@@ -13,7 +13,7 @@ import static org.hamcrest.CoreMatchers.is;
 @SpringBootTest
 public class SignUpPageTest extends BaseTest {
     public SignUpPageTest() {
-        baseURL = HOME_URL + "signup/";
+        START_URL = BASE_URL + "signup/";
     }
 
     public void inputUserData(String ssoId,String name,String password,String accout_number){
@@ -42,13 +42,13 @@ public class SignUpPageTest extends BaseTest {
     public void test_signUp_submit_success(){
         inputUserData("Test_ssoId@Test.com","Test_name","Test_password","Test_accountNumber");
         driver.findElement(By.id("signup_submit_btn")).click();
-        Assert.assertThat(driver.getCurrentUrl(),is(HOME_URL));
+        Assert.assertThat(driver.getCurrentUrl(),is(BASE_URL));
     }
 
     @Test
     public void test_signUp_submit_fail(){
         inputUserData("failTest","Test_name","Test_password","Test_accountNumber");
         driver.findElement(By.id("signup_submit_btn")).click();
-        Assert.assertThat(driver.getCurrentUrl(),is(baseURL));
+        Assert.assertThat(driver.getCurrentUrl(),is(START_URL));
     }
 }

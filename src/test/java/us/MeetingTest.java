@@ -32,7 +32,7 @@ public class MeetingTest extends HaveUserBaseTest {
         Assert.assertThat(driver.findElement(By.id("meeting_name")).getText(), is("test meeting name"));
         Assert.assertThat(driver.findElement(By.id("meeting_location")).getText(), is("test meeting location"));
         Assert.assertThat(driver.findElement(By.id("meeting_time")).getText(), is("test meeting time"));
-        Assert.assertThat(driver.findElement(By.id("meeting_url")).getText(), is(baseURL + "meetings/1"));
+        Assert.assertThat(driver.findElement(By.id("meeting_url")).getText(), is(BASE_URL + "meetings/1"));
 
         Assert.assertThat(driver.findElement(By.id("meeting_participant")).getText(), is(test_meeting_maker.getName()));
     }

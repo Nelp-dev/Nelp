@@ -8,8 +8,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 public class BaseTest {
     protected static WebDriver driver;
-    protected static String HOME_URL = "http://localhost:8080/"
-    protected String baseURL = HOME_URL;
+    protected static String BASE_URL = "http://localhost:8080/";
+    protected String START_URL = BASE_URL;
 
     @BeforeClass
     public static void setUpClass(){
@@ -24,6 +24,6 @@ public class BaseTest {
 
     @Before
     public void setUp() {
-        driver.get(baseURL);
+        driver.get(START_URL);
     }
 }
