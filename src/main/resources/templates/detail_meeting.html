@@ -51,7 +51,7 @@
         </div>
         <div th:unless="${meeting.isParticipant(session.user)}">
             <form th:action="@{'/meetings/' + ${meeting.id} + '/join'}" method="post">
-                <p><input id="join_meeting_btn" class="btn btn-lg btn-primary" type="submit" value="참가하기"/></p>
+                <p><input id="join_meeting_btn" class="btn btn-lg btn-primary" type="submit" value="참여하기"/></p>
             </form>
         </div>
         <p><a class="btn btn-lg btn-success" href="/" role="button" methods="GET">돌아가기</a></p>
