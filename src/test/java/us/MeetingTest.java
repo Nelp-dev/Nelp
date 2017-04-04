@@ -1,36 +1,23 @@
 package us;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import us.model.User;
-import us.repository.UserRepository;
 
 import static org.hamcrest.CoreMatchers.is;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class MeetingTest extends BaseTest{
-    @Autowired
-    private UserRepository userRepository;
-    private User test_meeting_maker;
-
-    @Override
-    public void setUp(){
-        super.setUp();
-        test_meeting_maker = new User("test@email.com", "test meeting maker", "test account number", "test password");
-        if(!userRepository.exists(test_meeting_maker.getSsoId()))
-            userRepository.save(test_meeting_maker);
+public class MeetingTest extends HaveUserBaseTest {
+    public MeetingTest() {
+        baseURL = "http://localhost:8080/";
     }
 
     @Test
     public void test_user_create_meeting(){
-        driver.get(baseURL);
         driver.findElement(By.id("login_btn")).click();
         driver.findElement(By.id("login_email_input")).sendKeys(test_meeting_maker.getSsoId());
         driver.findElement(By.id("login_password_input")).sendKeys(test_meeting_maker.getPassword());
