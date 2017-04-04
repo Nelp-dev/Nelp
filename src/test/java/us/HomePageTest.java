@@ -12,10 +12,6 @@ import static org.hamcrest.CoreMatchers.is;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class HomePageTest extends BaseTest {
-    public HomePageTest() {
-        baseURL = "http://localhost:8080/";
-    }
-
     @Test
     public void test_home_title(){
         Assert.assertThat(driver.getTitle(),is("Nelp"));

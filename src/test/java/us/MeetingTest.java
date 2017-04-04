@@ -12,10 +12,6 @@ import static org.hamcrest.CoreMatchers.is;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class MeetingTest extends HaveUserBaseTest {
-    public MeetingTest() {
-        baseURL = "http://localhost:8080/";
-    }
-
     @Test
     public void test_user_create_meeting(){
         driver.findElement(By.id("login_btn")).click();

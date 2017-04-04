@@ -4,9 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import us.model.User;
 import us.repository.UserRepository;
 
-/**
- * Created by jihun on 2017. 4. 4..
- */
 public class HaveUserBaseTest extends BaseTest {
     @Autowired
     protected UserRepository userRepository;
