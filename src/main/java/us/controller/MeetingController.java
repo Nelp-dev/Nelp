@@ -73,7 +73,7 @@ public class MeetingController {
         session.setAttribute("user", user);
         model.addAttribute("meeting", meeting);
         model.addAttribute("user", user);
-        return "join_meeting";
+        return "redirect:/meetings/" + meeting.getId();
     }
 
     @PostMapping(value = "/{id}/leave")

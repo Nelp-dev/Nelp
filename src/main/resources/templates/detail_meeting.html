@@ -46,12 +46,12 @@
         <br/>
         <div th:if="${meeting.isParticipant(session.user)}">
             <form th:action="@{'/meetings/' + ${meeting.id} + '/leave'}" method="post">
-                <p><input class="btn btn-lg btn-danger" type="submit" value="탈퇴하기"/></p>
+                <p><input id="leave_meeting_btn" class="btn btn-lg btn-danger" type="submit" value="탈퇴하기"/></p>
             </form>
         </div>
         <div th:unless="${meeting.isParticipant(session.user)}">
             <form th:action="@{'/meetings/' + ${meeting.id} + '/join'}" method="post">
-                <p><input class="btn btn-lg btn-primary" type="submit" value="참가하기"/></p>
+                <p><input id="join_meeting_btn" class="btn btn-lg btn-primary" type="submit" value="참가하기"/></p>
             </form>
         </div>
         <p><a class="btn btn-lg btn-success" href="/" role="button" methods="GET">돌아가기</a></p>
@@ -60,5 +60,6 @@
 </div>
 
 <head th:include="include/js :: script"></head>
+
 </body>
 </html>
