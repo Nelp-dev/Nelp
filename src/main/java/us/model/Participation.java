@@ -28,6 +28,14 @@ public class Participation {
         user.addParticipation(this);
     }
 
+    public List<Payment> getPaymentList() {
+        return paymentList;
+    }
+
+    public void setPaymentList(List<Payment> paymentList) {
+        this.paymentList = paymentList;
+    }
+
     public void leave(Meeting meeting, User user) {
         meeting.removeParticipation(this);
         user.removeParticipation(this);
@@ -35,5 +43,9 @@ public class Participation {
 
     public User getUser() {
         return user;
+    }
+
+    public void addPayment(Payment payment) {
+        this.paymentList.add(payment);
     }
 }

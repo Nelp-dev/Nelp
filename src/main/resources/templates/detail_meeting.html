@@ -5,10 +5,41 @@
     <title>Detail Meeting</title> 
 </head> 
 <body>
+
 <div class="container">
 
     <div class="jumbotron">
-        <h1>Meeting Information</h1> 
+         <span style="font-size:60px;">Meeting Information</span>
+        <button type="button" id="add_payment_btn" class="btn pull-right btn-success" data-toggle="modal" data-target="#add_payment_dialog">결제내역 추가</button>
+
+        <div class="modal fade" id="add_payment_dialog" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+
+                <form class="modal-content" th:object="${payment}" action="#" th:action="@{'/meetings/' + ${meeting.id} + '/payment/new'}" method="get">
+                    <div class="modal-header">
+                        <button id="close_btn" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h5 class="modal-title">결제내역 추가</h5>
+                    </div>
+                    <div class="modal-body">
+                        <span>결제자 : </span>
+                        <select id="payment_owner_name" th:field="*{ssoId}">
+                            <option th:each="participant : ${participant_list}" th:value="${participant.ssoId}" th:text="${participant.name}"></option>
+                        </select>
+                        <br/>
+                        <span>결제금액</span>
+                        <input class="form-control" id="payment_amount" th:field="*{amount}" type="number"/>
+                        <br/>
+                        <span>상세내역</span>
+                        <input class="form-control" id="payment_name" th:field="*{name}" type="text"/>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-default" type="submit">OK</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
 
         <table class="table table-striped"> 
             <thead>
@@ -31,6 +62,7 @@
                 <tr>
                     <th>참여자</th>
                     <th>계좌번호</th>
+                    <th>결제내역</th>
                 </tr>
             </thead>
             <tbody>
@@ -38,6 +70,13 @@
                     <td id="meeting_participant" th:text="${participant.name}"></td>
                     <td>
                         <strong th:text="${participant.account_number}"></strong>
+                    </td>
+                    <td>
+                        <div th:each="payment : ${all_payment_list}">
+                            <div th:if="${payment.isOwner(participant.ssoId)}">
+                                <span style="font-size:15px;" th:text="${payment.amount} + ' ' + ${payment.name}"></span>
+                            </div>
+                        </div>
                     </td>
                 </tr>
             </tbody>
