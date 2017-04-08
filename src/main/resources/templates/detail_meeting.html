@@ -30,12 +30,14 @@
             <thead>
                 <tr>
                     <th>참여자</th>
+                    <th>은행</th>
                     <th>계좌번호</th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="participant : ${participant_list}">
                     <td id="meeting_participant" th:text="${participant.name}"></td>
+                    <td th:text="${participant.account_bank}"></td>
                     <td>
                         <strong th:text="${participant.account_number}"></strong>
                     </td>
