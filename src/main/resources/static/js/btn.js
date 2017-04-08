@@ -11,7 +11,7 @@ $("#add_payment_btn").click(function () {
     $("#add_payment_dialog").style.display = "block";
 });
 
-$("#close_btn").click(function () {
+$("#add_payment_dialog_close_btn").click(function () {
     $("#add_payment_dialog").style.display = "none";
 });
 

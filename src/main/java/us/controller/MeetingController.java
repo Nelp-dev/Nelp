@@ -99,7 +99,7 @@ public class MeetingController {
         addPayment.setName(payment.getName());
         addPayment.setSsoId(payment.getSsoId());
         Participation participation = participationRepository.findOne(new ParticipationId(id, addPayment.getSsoId()));
-        participation.addPayment(payment);
+        participation.addPayment(addPayment);
         addPayment.setParticipation(participation);
         paymentRepository.save(addPayment);
         return "redirect:/meetings/" + id;

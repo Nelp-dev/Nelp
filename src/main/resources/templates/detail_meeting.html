@@ -17,7 +17,7 @@
 
                 <form class="modal-content" th:object="${payment}" action="#" th:action="@{'/meetings/' + ${meeting.id} + '/payment/new'}" method="get">
                     <div class="modal-header">
-                        <button id="close_btn" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <button id="add_payment_dialog_close_btn" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         <h5 class="modal-title">결제내역 추가</h5>
                     </div>
                     <div class="modal-body">
