@@ -7,12 +7,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import us.model.Meeting;
-import us.model.Participation;
-import us.model.ParticipationId;
-import us.model.User;
+import us.model.*;
 import us.repository.MeetingRepository;
 import us.repository.ParticipationRepository;
+import us.repository.PaymentRepository;
 import us.repository.UserRepository;
 
 import javax.servlet.http.HttpSession;
@@ -28,6 +26,8 @@ public class MeetingController {
     private UserRepository userRepository;
     @Autowired
     private ParticipationRepository participationRepository;
+    @Autowired
+    private PaymentRepository paymentRepository;
 
 
     @GetMapping(value = "/new")
@@ -60,6 +60,8 @@ public class MeetingController {
 
         model.addAttribute("participant_list", getParticipantList(meeting));
         model.addAttribute("meeting", meeting);
+        model.addAttribute("payment", new Payment());
+        model.addAttribute("all_payment_list", getPaymentList(meeting));
         return "detail_meeting";
     }
 
@@ -90,6 +92,19 @@ public class MeetingController {
         return "redirect:/meetings/" + meeting.getId();
     }
 
+    @GetMapping(value = "/{id}/payment/new")
+    public String addPayment(@PathVariable int id, Payment payment) {
+        Payment addPayment = new Payment();
+        addPayment.setAmount(payment.getAmount());
+        addPayment.setName(payment.getName());
+        addPayment.setSsoId(payment.getSsoId());
+        Participation participation = participationRepository.findOne(new ParticipationId(id, addPayment.getSsoId()));
+        participation.addPayment(addPayment);
+        addPayment.setParticipation(participation);
+        paymentRepository.save(addPayment);
+        return "redirect:/meetings/" + id;
+    }
+
     private void participate(Meeting meeting, User user) {
         Participation participation = new Participation(meeting, user);
         participationRepository.save(participation);
@@ -108,5 +123,16 @@ public class MeetingController {
         }
 
         return participantList;
+    }
+
+    private List<Payment> getPaymentList(Meeting meeting) {
+        List<Participation> participationList = participationRepository.findByMeeting(meeting);
+        List<Payment> allPaymentList = new ArrayList<Payment>();
+        for(Participation participation : participationList) {
+            for(Payment payment : participation.getPaymentList()) {
+                allPaymentList.add(payment);
+            }
+        }
+        return allPaymentList;
     }
 }
