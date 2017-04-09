@@ -14,10 +14,7 @@ import static org.hamcrest.CoreMatchers.is;
 public class MeetingTest extends HaveUserBaseTest {
     @Test
     public void test_user_create_meeting(){
-        driver.findElement(By.id("login_btn")).click();
-        driver.findElement(By.id("login_email_input")).sendKeys(test_meeting_maker.getSsoId());
-        driver.findElement(By.id("login_password_input")).sendKeys(test_meeting_maker.getPassword());
-        driver.findElement(By.id("login_submit_btn")).click();
+        super.login(test_meeting_maker);
 
         driver.findElement(By.id("meeting_new_btn")).click();
 

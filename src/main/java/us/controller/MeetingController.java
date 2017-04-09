@@ -43,8 +43,7 @@ public class MeetingController {
             return "redirect:/";
         }
         meetingRepository.save(meeting);
-        String base_url = "http://localhost:8080/meetings/" + meeting.getId();
-        meeting.setUrl(base_url);
+        meeting.setUrl();
         meetingRepository.save(meeting);
 
         User user = (User)session.getAttribute("user");

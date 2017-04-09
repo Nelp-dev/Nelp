@@ -1,5 +1,6 @@
 package us;
 
+import org.openqa.selenium.By;
 import org.springframework.beans.factory.annotation.Autowired;
 import us.model.User;
 import us.repository.UserRepository;
@@ -28,5 +29,13 @@ public class HaveUserBaseTest extends BaseTest {
             userRepository.save(test_meeting_participation);
 
         super.setUp();
+    }
+
+    public void login(User user) {
+        driver.get(BASE_URL);
+        driver.findElement(By.id("login_btn")).click();
+        driver.findElement(By.id("login_email_input")).sendKeys(user.getSsoId());
+        driver.findElement(By.id("login_password_input")).sendKeys(user.getPassword());
+        driver.findElement(By.id("login_submit_btn")).click();
     }
 }
