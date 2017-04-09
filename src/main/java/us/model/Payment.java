@@ -14,7 +14,9 @@ public class Payment {
             @JoinColumn(name="user_id")
     })
     private Participation participation;
+    @Column(name = "name")
     private String name;
+    @Column(name = "ssoId")
     private String ssoId;
 
     public String getSsoId() {
