@@ -6,12 +6,21 @@ import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import us.model.User;
 
 import static org.hamcrest.CoreMatchers.is;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class MeetingTest extends HaveUserBaseTest {
+    private User test_meeting_maker;
+
+    @Override
+    public void setUp() {
+        super.setUp();
+        test_meeting_maker = test_users.get(0);
+    }
+
     @Test
     public void test_user_create_meeting(){
         super.login(test_meeting_maker);
