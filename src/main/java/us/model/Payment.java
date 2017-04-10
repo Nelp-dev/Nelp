@@ -14,8 +14,55 @@ public class Payment {
             @JoinColumn(name="user_id")
     })
     private Participation participation;
+    @Column(name = "name")
     private String name;
+    @Column(name = "ssoId")
+    private String ssoId;
+
+    public String getSsoId() {
+        return ssoId;
+    }
+
+    public void setSsoId(String ssoId) {
+        this.ssoId = ssoId;
+    }
+
     private int amount;
 
     public Payment() {}
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Participation getParticipation() {
+        return participation;
+    }
+
+    public void setParticipation(Participation participation) {
+        this.participation = participation;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+    public boolean isOwner(String ssoId) {
+        return this.ssoId.equals(ssoId);
+    }
 }
