@@ -27,10 +27,10 @@
                         </select>
                         <br/>
                         <span>결제금액</span>
-                        <input class="form-control" id="payment_amount" th:field="*{amount}" type="number"/>
+                        <input id="payment_amount" class="form-control" th:field="*{amount}" type="number"/>
                         <br/>
                         <span>상세내역</span>
-                        <input class="form-control" id="payment_name" th:field="*{name}" type="text"/>
+                        <input id="payment_name" class="form-control" th:field="*{name}" type="text"/>
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-default" type="submit">OK</button>
@@ -96,6 +96,25 @@
             </form>
         </div>
         <p><a class="btn btn-lg btn-success" href="/" role="button" methods="GET">돌아가기</a></p>
+    </div>
+    <div class="jumbotron">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>받을 돈</th>
+            </tr>
+            </thead>
+            <tbody id="money_to_receive_list">
+                <tr th:each="user : ${money_to_user_list}">
+                    <td th:text="${user.name}"></td>
+                </tr>
+            </tbody>
+            <thead>
+            <tr>
+                <th>보낼 돈</th>
+            </tr>
+            </thead>
+        </table>
     </div>
 
 </div>

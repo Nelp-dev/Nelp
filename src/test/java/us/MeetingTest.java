@@ -6,18 +6,24 @@ import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import us.model.User;
 
 import static org.hamcrest.CoreMatchers.is;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class MeetingTest extends HaveUserBaseTest {
+    private User test_meeting_maker;
+
+    @Override
+    public void setUp() {
+        super.setUp();
+        test_meeting_maker = test_users.get(0);
+    }
+
     @Test
     public void test_user_create_meeting(){
-        driver.findElement(By.id("login_btn")).click();
-        driver.findElement(By.id("login_email_input")).sendKeys(test_meeting_maker.getSsoId());
-        driver.findElement(By.id("login_password_input")).sendKeys(test_meeting_maker.getPassword());
-        driver.findElement(By.id("login_submit_btn")).click();
+        super.login(test_meeting_maker);
 
         driver.findElement(By.id("meeting_new_btn")).click();
 

@@ -43,8 +43,7 @@ public class MeetingController {
             return "redirect:/";
         }
         meetingRepository.save(meeting);
-        String base_url = "http://localhost:8080/meetings/" + meeting.getId();
-        meeting.setUrl(base_url);
+        meeting.setUrl();
         meetingRepository.save(meeting);
 
         User user = (User)session.getAttribute("user");
@@ -55,13 +54,23 @@ public class MeetingController {
     }
 
     @GetMapping(value = "/{id}")
-    public String getDetailMeeting(@PathVariable int id, Model model) {
+    public String getDetailMeeting(@PathVariable int id, Model model, HttpSession session) {
         Meeting meeting = meetingRepository.findOne(id);
+        User user = (User)session.getAttribute("user");
+
+        List<User> money_to_user_list = getParticipantList(meeting);
+        for(User participant: money_to_user_list) {
+            if(participant.getSsoId().equals(user.getSsoId())){
+               money_to_user_list.remove(participant);
+               break;
+            }
+        }
 
         model.addAttribute("participant_list", getParticipantList(meeting));
         model.addAttribute("meeting", meeting);
         model.addAttribute("payment", new Payment());
         model.addAttribute("all_payment_list", getPaymentList(meeting));
+        model.addAttribute("money_to_user_list", money_to_user_list);
         return "detail_meeting";
     }
 

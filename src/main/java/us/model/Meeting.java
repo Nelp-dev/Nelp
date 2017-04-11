@@ -67,8 +67,9 @@ public class Meeting {
         return url;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setUrl() {
+        String base_url = "http://localhost:8080/meetings/";
+        this.url = base_url + Integer.toString(this.id);
     }
 
     public List<Participation> getParticipationList() {
