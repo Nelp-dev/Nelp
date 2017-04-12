@@ -39,6 +39,7 @@ public class MeetingController {
 
     @PostMapping(value = "/new")
     public String createMeeting(Meeting meeting, HttpSession session) {
+        System.out.println(meeting.getDate());
         if (session.getAttribute("user") == null) {
             return "redirect:/";
         }

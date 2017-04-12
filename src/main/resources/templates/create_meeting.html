@@ -6,16 +6,16 @@
     <title>Create Meeting</title>
 </head>
 <body>
-
 <div class="container">
     <form class="form-default" th:action="@{/meetings/new}" method="post">
         <h2 class="form-heading">Create Meeting</h2>
         <input id="meeting_name_input" class="form-control" type="text" th:field="${meeting.name}" placeholder="Name" required="required" autofocus="autofocus"/>
         <input id="meeting_location_input" class="form-control" type="text" th:field="${meeting.location}" placeholder="Location" required="required" />
+        <input id="meeting_date_input" class="form-control" type="date" th:field="${meeting.date}" required="required"/>
         <input id="meeting_time_input" class="form-control" type="text" th:field="${meeting.time}" placeholder="Time" required="required" />
         <button id="meeting_submit_btn" class="btn btn-lg btn-primary btn-block top-button" type="submit">Submit</button>
-        <button class="btn btn-lg btn-warning btn-block" type="reset">Reset</button>
     </form>
 </div>
+
 </body>
 </html>
