@@ -56,35 +56,46 @@ public class MeetingController {
     @GetMapping(value = "/{id}")
     public String getDetailMeeting(@PathVariable int id, Model model, HttpSession session) {
         Meeting meeting = meetingRepository.findOne(id);
+
         User user = (User)session.getAttribute("user");
 
-        List<User> money_to_user_list = getParticipantList(meeting);
-        for(User participant: money_to_user_list) {
-            if(participant.getSsoId().equals(user.getSsoId())){
-               money_to_user_list.remove(participant);
-               break;
-            }
-        }
 
+        if (user != null) {
+            model.addAttribute("isParticipate", meeting.isParticipant(user));
+            List<User> money_to_user_list = getParticipantList(meeting);
+            for (User participant : money_to_user_list) {
+                if (participant.getSsoId().equals(user.getSsoId())) {
+                    money_to_user_list.remove(participant);
+                    break;
+                }
+            }
+            model.addAttribute("money_to_user_list", money_to_user_list);
+        } else {
+            model.addAttribute("isParticipate", false);
+        }
         model.addAttribute("participant_list", getParticipantList(meeting));
         model.addAttribute("meeting", meeting);
         model.addAttribute("payment", new Payment());
         model.addAttribute("all_payment_list", getPaymentList(meeting));
-        model.addAttribute("money_to_user_list", money_to_user_list);
         return "detail_meeting";
     }
 
     @PostMapping(value = "/{id}/join")
     public String joinMeeting(@PathVariable int id, HttpSession session, Model model) {
         User sessionUser = (User)session.getAttribute("user");
-        User user = userRepository.findOne(sessionUser.getSsoId());
-        Meeting meeting = meetingRepository.findOne(id);
-        participate(meeting, user);
+        if (sessionUser != null) {
+            User user = userRepository.findOne(sessionUser.getSsoId());
+            Meeting meeting = meetingRepository.findOne(id);
+            participate(meeting, user);
 
-        session.setAttribute("user", user);
-        model.addAttribute("meeting", meeting);
-        model.addAttribute("user", user);
-        return "redirect:/meetings/" + meeting.getId();
+            session.setAttribute("user", user);
+            model.addAttribute("isParticipate", true);
+            model.addAttribute("meeting", meeting);
+            model.addAttribute("user", user);
+            return "redirect:/meetings/" + meeting.getId();
+        } else {
+            return "redirect:/login";
+        }
     }
 
     @PostMapping(value = "/{id}/leave")
@@ -96,6 +107,7 @@ public class MeetingController {
         leave(meeting, user, participation);
 
         session.setAttribute("user", user);
+        model.addAttribute("isParticipate", false);
         model.addAttribute("meeting", meeting);
         model.addAttribute("user", user);
         return "redirect:/meetings/" + meeting.getId();
