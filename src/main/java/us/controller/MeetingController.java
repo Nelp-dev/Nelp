@@ -14,6 +14,16 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
+class UserAndMoneyData{
+    public String user_name;
+    public int amount;
+
+    public UserAndMoneyData(String user_name, int amount) {
+        this.user_name = user_name;
+        this.amount = amount;
+    }
+}
+
 @Controller
 @RequestMapping(value = "/meetings")
 public class MeetingController {
@@ -57,19 +67,13 @@ public class MeetingController {
         Meeting meeting = meetingRepository.findOne(id);
         User user = (User)session.getAttribute("user");
 
-        List<User> money_to_user_list = getParticipantList(meeting);
-        for(User participant: money_to_user_list) {
-            if(participant.getSsoId().equals(user.getSsoId())){
-               money_to_user_list.remove(participant);
-               break;
-            }
-        }
+        List<UserAndMoneyData> money_to_receive_list = getMoneyToReceiveDataList(meeting, user);
 
         model.addAttribute("participant_list", getParticipantList(meeting));
         model.addAttribute("meeting", meeting);
         model.addAttribute("payment", new Payment());
         model.addAttribute("all_payment_list", getPaymentList(meeting));
-        model.addAttribute("money_to_user_list", money_to_user_list);
+        model.addAttribute("money_to_receive_list", money_to_receive_list);
         return "detail_meeting";
     }
 
@@ -147,7 +151,7 @@ public class MeetingController {
     }
 
     private void updateMoneyToSend(Payment payment) {
-        Meeting meeting = payment.getParticipation().getMeeting())
+        Meeting meeting = payment.getParticipation().getMeeting();
         User payer = payment.getParticipation().getUser();
         List<User> others = getParticipantList(meeting);
         others.remove(payer);
@@ -161,7 +165,14 @@ public class MeetingController {
         }
     }
 
-    private void getMoneyToReceiveList(User user) {
-
+    private List<UserAndMoneyData> getMoneyToReceiveDataList(Meeting meeting, User user) {
+        List<UserAndMoneyData> moneyToReceiveDataList = new ArrayList<>();
+        List<MoneyToSend> moneyToSendList = moneyToSendRepository.findByMeeting(meeting);
+        for(MoneyToSend moneyToSend : moneyToSendList) {
+            if(moneyToSend.getRecipient().getSsoId().equals(user.getSsoId())) {
+                moneyToReceiveDataList.add(new UserAndMoneyData(moneyToSend.getGiver().getName(), moneyToSend.getAmount()));
+            }
+        }
+        return moneyToReceiveDataList;
     }
 }

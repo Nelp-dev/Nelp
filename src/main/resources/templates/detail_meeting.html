@@ -105,9 +105,9 @@
             </tr>
             </thead>
             <tbody id="money_to_receive_list">
-                <tr th:each="user : ${money_to_user_list}">
-                    <td th:text="${user.name}"></td>
-                    <td>0원</td>
+                <tr th:each="money_to_receive : ${money_to_receive_list}">
+                    <td th:text="${money_to_receive.user_name}"></td>
+                    <td th:text="${money_to_receive.amount}"></td>
                 </tr>
             </tbody>
             <thead>
@@ -116,10 +116,10 @@
             </tr>
             </thead>
             <tbody id="money_to_send_list">
-            <tr th:each="user : ${money_to_user_list}">
-                <td th:text="${user.name}"></td>
-                <td>0원</td>
-            </tr>
+                <tr th:each="money_to_receive : ${money_to_receive_list}">
+                    <td th:text="${money_to_receive.user_name}"></td>
+                    <td th:text="${money_to_receive.amount}"></td>
+                </tr>
             </tbody>
         </table>
     </div>

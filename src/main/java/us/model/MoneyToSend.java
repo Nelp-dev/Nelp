@@ -20,6 +20,7 @@ public class MoneyToSend {
     @JoinColumn(name="meeting_id")
     private Meeting meeting;
 
+    public MoneyToSend() { }
     public MoneyToSend(int amount, User giver, User recipient, Meeting meeting) {
         this.amount = amount;
         this.giver = giver;
@@ -35,7 +36,7 @@ public class MoneyToSend {
         this.id = id;
     }
 
-    public long getAmount() {
+    public int getAmount() {
         return amount;
     }
 
