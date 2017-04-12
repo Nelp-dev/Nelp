@@ -8,10 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import us.model.*;
-import us.repository.MeetingRepository;
-import us.repository.ParticipationRepository;
-import us.repository.PaymentRepository;
-import us.repository.UserRepository;
+import us.repository.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
@@ -28,6 +25,8 @@ public class MeetingController {
     private ParticipationRepository participationRepository;
     @Autowired
     private PaymentRepository paymentRepository;
+    @Autowired
+    private MoneyToSendRepository moneyToSendRepository;
 
 
     @GetMapping(value = "/new")
@@ -101,7 +100,7 @@ public class MeetingController {
         return "redirect:/meetings/" + meeting.getId();
     }
 
-    @GetMapping(value = "/{id}/payment/new")
+    @PostMapping(value = "/{id}/payment")
     public String addPayment(@PathVariable int id, Payment payment) {
         Payment addPayment = new Payment();
         addPayment.setAmount(payment.getAmount());
@@ -111,6 +110,8 @@ public class MeetingController {
         participation.addPayment(addPayment);
         addPayment.setParticipation(participation);
         paymentRepository.save(addPayment);
+
+        updateMoneyToSend(addPayment);
         return "redirect:/meetings/" + id;
     }
 
@@ -143,5 +144,24 @@ public class MeetingController {
             }
         }
         return allPaymentList;
+    }
+
+    private void updateMoneyToSend(Payment payment) {
+        Meeting meeting = payment.getParticipation().getMeeting())
+        User payer = payment.getParticipation().getUser();
+        List<User> others = getParticipantList(meeting);
+        others.remove(payer);
+
+        int amount = payment.getAmount();
+        int participants_num = others.size() + 1;
+        int price_per_person = amount / participants_num;
+
+        for(User user : others) {
+            moneyToSendRepository.save(new MoneyToSend(price_per_person, user, payer, meeting));
+        }
+    }
+
+    private void getMoneyToReceiveList(User user) {
+
     }
 }
