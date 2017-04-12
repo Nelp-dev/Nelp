@@ -15,7 +15,7 @@
         <div class="modal fade" id="add_payment_dialog" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-sm">
 
-                <form class="modal-content" th:object="${payment}" action="#" th:action="@{'/meetings/' + ${meeting.id} + '/payment/new'}" method="get">
+                <form class="modal-content" th:object="${payment}" action="#" th:action="@{'/meetings/' + ${meeting.id} + '/payment'}" method="post">
                     <div class="modal-header">
                         <button id="add_payment_dialog_close_btn" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         <h5 class="modal-title">결제내역 추가</h5>
@@ -33,7 +33,7 @@
                         <input id="payment_name" class="form-control" th:field="*{name}" type="text"/>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-default" type="submit">OK</button>
+                        <button id="payment_submit_button" class="btn btn-default" type="submit">OK</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </form>
@@ -107,6 +107,7 @@
             <tbody id="money_to_receive_list">
                 <tr th:each="user : ${money_to_user_list}">
                     <td th:text="${user.name}"></td>
+                    <td>0원</td>
                 </tr>
             </tbody>
             <thead>
@@ -114,6 +115,12 @@
                 <th>보낼 돈</th>
             </tr>
             </thead>
+            <tbody id="money_to_send_list">
+            <tr th:each="user : ${money_to_user_list}">
+                <td th:text="${user.name}"></td>
+                <td>0원</td>
+            </tr>
+            </tbody>
         </table>
     </div>
 
