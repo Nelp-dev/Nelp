@@ -61,7 +61,7 @@ public class MeetingController {
 
 
         if (user != null) {
-            model.addAttribute("isParticipate", meeting.isParticipant(user));
+            model.addAttribute("isParticipated", meeting.isParticipant(user));
             List<User> money_to_user_list = getParticipantList(meeting);
             for (User participant : money_to_user_list) {
                 if (participant.getSsoId().equals(user.getSsoId())) {
@@ -89,7 +89,7 @@ public class MeetingController {
             participate(meeting, user);
 
             session.setAttribute("user", user);
-            model.addAttribute("isParticipate", true);
+            model.addAttribute("isParticipated", true);
             model.addAttribute("meeting", meeting);
             model.addAttribute("user", user);
             return "redirect:/meetings/" + meeting.getId();
@@ -107,7 +107,7 @@ public class MeetingController {
         leave(meeting, user, participation);
 
         session.setAttribute("user", user);
-        model.addAttribute("isParticipate", false);
+        model.addAttribute("isParticipated", false);
         model.addAttribute("meeting", meeting);
         model.addAttribute("user", user);
         return "redirect:/meetings/" + meeting.getId();

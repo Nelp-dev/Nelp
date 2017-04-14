@@ -16,11 +16,6 @@ public class DetailMeetingPageTest extends BaseTest {
         START_URL = BASE_URL + "meetings/2";
     }
 
-    @Override
-    public void setUp() {
-        super.setUp();
-    }
-
     @Test
     public void test_not_login_show_meeting_info() {
         /* 로그인을 안한 상태에서 Detail 정보가 보여야 한다. */
@@ -39,7 +34,6 @@ public class DetailMeetingPageTest extends BaseTest {
     public void test_login_show_meeting_info() {
         /* 로그인한 상태에서 Detail 정보가 보여야 한다. */
         // 로그인을 한다
-        driver.get(BASE_URL);
         driver.findElement(By.id("login_btn")).click();
         driver.findElement(By.id("login_email_input")).sendKeys("test0@email.com");
         driver.findElement(By.id("login_password_input")).sendKeys("test password0");
