@@ -10,7 +10,7 @@
 
     <div class="jumbotron">
          <span style="font-size:60px;">Meeting Information</span>
-        <button type="button" id="add_payment_btn" class="btn pull-right btn-success" data-toggle="modal" data-target="#add_payment_dialog">결제내역 추가</button>
+        <button th:if="${isParticipated}" type="button" id="add_payment_btn" class="btn pull-right btn-success" data-toggle="modal" data-target="#add_payment_dialog">결제내역 추가</button>
 
         <div class="modal fade" id="add_payment_dialog" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-sm">
@@ -87,19 +87,19 @@
         </table>
         <strong>모임신청 URL : </strong><a id="meeting_url" th:href="${meeting.url}" th:text="${meeting.url}"></a><br/>
         <br/>
-        <div th:if="${meeting.isParticipant(session.user)}">
+        <div th:if="${isParticipated}">
             <form th:action="@{'/meetings/' + ${meeting.id} + '/leave'}" method="post">
                 <p><input id="leave_meeting_btn" class="btn btn-lg btn-danger" type="submit" value="탈퇴하기"/></p>
             </form>
         </div>
-        <div th:unless="${meeting.isParticipant(session.user)}">
+        <div th:unless="${isParticipated}">
             <form th:action="@{'/meetings/' + ${meeting.id} + '/join'}" method="post">
                 <p><input id="join_meeting_btn" class="btn btn-lg btn-primary" type="submit" value="참여하기"/></p>
             </form>
         </div>
         <p><a class="btn btn-lg btn-success" href="/" role="button" methods="GET">돌아가기</a></p>
     </div>
-    <div class="jumbotron">
+    <div th:if="${isParticipated}" class="jumbotron">
         <table class="table table-striped">
             <thead>
             <tr>
