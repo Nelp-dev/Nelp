@@ -45,14 +45,16 @@
             <thead>
                 <tr> 
                     <th>이름</th> 
-                    <th>장소</th>         
+                    <th>장소</th>
+                    <th>날짜</th>
                     <th>시간</th>
                 </tr>
              </thead>
             <tbody>
                 <tr> 
-                    <td id="meeting_name" th:text="${meeting.name}"></td>              
-                    <td id="meeting_location" th:text="${meeting.location}"></td>              
+                    <td id="meeting_name" th:text="${meeting.name}"></td>
+                    <td id="meeting_location" th:text="${meeting.location}"></td>
+                    <td id="meeting_date" th:text="${meeting.date}"></td>
                     <td id="meeting_time" th:text="${meeting.time}"></td>
                 </tr>
             </tbody> 

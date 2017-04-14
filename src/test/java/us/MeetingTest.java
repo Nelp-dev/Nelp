@@ -31,12 +31,14 @@ public class MeetingTest extends HaveUserBaseTest {
 
         driver.findElement(By.id("meeting_name_input")).sendKeys("test meeting name");
         driver.findElement(By.id("meeting_location_input")).sendKeys("test meeting location");
+        driver.findElement(By.id("meeting_date_input")).sendKeys("0020170411");
         driver.findElement(By.id("meeting_time_input")).sendKeys("test meeting time");
         driver.findElement(By.id("meeting_submit_btn")).click();
 
         Assert.assertThat(driver.getTitle(), is("Detail Meeting"));
         Assert.assertThat(driver.findElement(By.id("meeting_name")).getText(), is("test meeting name"));
         Assert.assertThat(driver.findElement(By.id("meeting_location")).getText(), is("test meeting location"));
+        Assert.assertThat(driver.findElement(By.id("meeting_date")).getText(), is("2017-04-11"));
         Assert.assertThat(driver.findElement(By.id("meeting_time")).getText(), is("test meeting time"));
         Assert.assertThat(driver.findElement(By.id("meeting_url")).getText(), is(BASE_URL + "meetings/1"));
 
