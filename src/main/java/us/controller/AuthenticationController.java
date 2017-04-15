@@ -28,7 +28,7 @@ public class AuthenticationController {
             return "redirect:/login";
         }
         session.setAttribute("user", foundUser);
-
+        
         return "redirect:/";
     }
 

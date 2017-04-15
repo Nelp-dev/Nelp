@@ -65,10 +65,16 @@ public class MeetingController {
     @GetMapping(value = "/{id}")
     public String getDetailMeeting(@PathVariable int id, Model model, HttpSession session) {
         Meeting meeting = meetingRepository.findOne(id);
+
         User user = (User)session.getAttribute("user");
 
         List<UserAndMoneyData> money_to_receive_list = getMoneyToReceiveDataList(meeting, user);
 
+        if (user != null) {
+            model.addAttribute("isParticipated", meeting.isParticipant(user));
+        } else {
+            model.addAttribute("isParticipated", false);
+        }
         model.addAttribute("participant_list", getParticipantList(meeting));
         model.addAttribute("meeting", meeting);
         model.addAttribute("payment", new Payment());
@@ -80,14 +86,19 @@ public class MeetingController {
     @PostMapping(value = "/{id}/join")
     public String joinMeeting(@PathVariable int id, HttpSession session, Model model) {
         User sessionUser = (User)session.getAttribute("user");
-        User user = userRepository.findOne(sessionUser.getSsoId());
-        Meeting meeting = meetingRepository.findOne(id);
-        participate(meeting, user);
+        if (sessionUser != null) {
+            User user = userRepository.findOne(sessionUser.getSsoId());
+            Meeting meeting = meetingRepository.findOne(id);
+            participate(meeting, user);
 
-        session.setAttribute("user", user);
-        model.addAttribute("meeting", meeting);
-        model.addAttribute("user", user);
-        return "redirect:/meetings/" + meeting.getId();
+            session.setAttribute("user", user);
+            model.addAttribute("isParticipated", true);
+            model.addAttribute("meeting", meeting);
+            model.addAttribute("user", user);
+            return "redirect:/meetings/" + meeting.getId();
+        } else {
+            return "redirect:/login";
+        }
     }
 
     @PostMapping(value = "/{id}/leave")
@@ -99,6 +110,7 @@ public class MeetingController {
         leave(meeting, user, participation);
 
         session.setAttribute("user", user);
+        model.addAttribute("isParticipated", false);
         model.addAttribute("meeting", meeting);
         model.addAttribute("user", user);
         return "redirect:/meetings/" + meeting.getId();
