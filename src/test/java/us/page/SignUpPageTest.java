@@ -1,4 +1,4 @@
-package us;
+package us.page;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import us.base.BaseTest;
 
 import static org.hamcrest.CoreMatchers.is;
 

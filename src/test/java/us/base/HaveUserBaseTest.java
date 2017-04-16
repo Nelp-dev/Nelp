@@ -1,4 +1,4 @@
-package us;
+package us.base;
 
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
