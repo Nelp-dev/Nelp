@@ -9,31 +9,26 @@
 <div class="container">
 
     <div class="jumbotron">
-         <span style="font-size:60px;">Meeting Information</span>
-        <button th:if="${isParticipated}" type="button" id="add_payment_btn" class="btn pull-right btn-success" data-toggle="modal" data-target="#add_payment_dialog">결제내역 추가</button>
 
-        <div class="modal fade" id="add_payment_dialog" role="dialog" aria-hidden="true">
+         <span style="font-size:60px;">Meeting Information</span>
+
+        <button th:if="${isParticipated}" type="button" id="meeting_option_btn" class="btn pull-right btn-success" data-toggle="modal" data-target="#meeting_option_dialog">설정</button>
+        <div class="modal fade" id="meeting_option_dialog" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-sm">
 
-                <form class="modal-content" th:object="${payment}" action="#" th:action="@{'/meetings/' + ${meeting.id} + '/payment/new'}" method="get">
+                <form class="modal-content" th:object="${meeting}" action="#" th:action="@{'/meetings/' + ${meeting.id} + '/update'}" method="post">
                     <div class="modal-header">
-                        <button id="add_payment_dialog_close_btn" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h5 class="modal-title">결제내역 추가</h5>
+                        <button id="meeting_option_dialog_close_btn" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h5 class="modal-title">모임 정보 수정하기</h5>
                     </div>
                     <div class="modal-body">
-                        <span>결제자 : </span>
-                        <select id="payment_owner_name" th:field="*{ssoId}">
-                            <option th:each="participant : ${participant_list}" th:value="${participant.ssoId}" th:text="${participant.name}"></option>
-                        </select>
-                        <br/>
-                        <span>결제금액</span>
-                        <input id="payment_amount" class="form-control" th:field="*{amount}" type="number"/>
-                        <br/>
-                        <span>상세내역</span>
-                        <input id="payment_name" class="form-control" th:field="*{name}" type="text"/>
+                        <input id="meeting_name_input" class="form-control" type="text" th:field="*{name}" th:value="*{name}" placeholder="Name" required="required" autofocus="autofocus"/>
+                        <input id="meeting_location_input" class="form-control" type="text" th:field="*{location}" th:value="*{location}" placeholder="Location" required="required" />
+                        <input id="meeting_date_input" class="form-control" type="date" th:field="*{date}" th:value="*{date}" required="required"/>
+                        <input id="meeting_time_input" class="form-control" type="text" th:field="*{time}" th:value="*{time}" placeholder="Time" required="required" />
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-default" type="submit">OK</button>
+                        <button id="meeting_update_submit_btn" class="btn btn-default" type="submit">OK</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </form>
@@ -85,7 +80,38 @@
                 </tr>
             </tbody>
         </table>
-        <strong>모임신청 URL : </strong><a id="meeting_url" th:href="${meeting.url}" th:text="${meeting.url}"></a><br/>
+        <strong>모임신청 URL : </strong><a id="meeting_url" th:href="${meeting.url}" th:text="${meeting.url}"></a>
+        <button th:if="${isParticipated}" type="button" id="add_payment_btn" class="btn pull-right btn-success" data-toggle="modal" data-target="#add_payment_dialog">결제내역 추가</button>
+
+        <div class="modal fade" id="add_payment_dialog" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+
+                <form class="modal-content" th:object="${payment}" action="#" th:action="@{'/meetings/' + ${meeting.id} + '/payment/new'}" method="get">
+                    <div class="modal-header">
+                        <button id="add_payment_dialog_close_btn" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h5 class="modal-title">결제내역 추가</h5>
+                    </div>
+                    <div class="modal-body">
+                        <span>결제자 : </span>
+                        <select id="payment_owner_name" th:field="*{ssoId}">
+                            <option th:each="participant : ${participant_list}" th:value="${participant.ssoId}" th:text="${participant.name}"></option>
+                        </select>
+                        <br/>
+                        <span>결제금액</span>
+                        <input id="payment_amount" class="form-control" th:field="*{amount}" type="number"/>
+                        <br/>
+                        <span>상세내역</span>
+                        <input id="payment_name" class="form-control" th:field="*{name}" type="text"/>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-default" type="submit">OK</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+        <br/>
         <br/>
         <div th:if="${isParticipated}">
             <form th:action="@{'/meetings/' + ${meeting.id} + '/leave'}" method="post">
