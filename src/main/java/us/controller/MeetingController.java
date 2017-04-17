@@ -80,6 +80,20 @@ public class MeetingController {
         return "detail_meeting";
     }
 
+    @PostMapping(value = "/{id}/update")
+    public String updateMeeting(@PathVariable int id, Meeting modifiedMeeting, HttpSession session) {
+        Meeting meeting = meetingRepository.findOne(id);
+
+        meeting.setDate(modifiedMeeting.getDate());
+        meeting.setLocation(modifiedMeeting.getLocation());
+        meeting.setName(modifiedMeeting.getName());
+        meeting.setTime(modifiedMeeting.getTime());
+
+        meetingRepository.save(meeting);
+
+        return "redirect:/meetings/" + meeting.getId();
+    }
+
     @PostMapping(value = "/{id}/join")
     public String joinMeeting(@PathVariable int id, HttpSession session, Model model) {
         User sessionUser = (User)session.getAttribute("user");
