@@ -18,14 +18,16 @@ public class AuthenticationController {
     @GetMapping("/login")
     public String getLoginForm(Model model){
         model.addAttribute("user",new User());
+        model.addAttribute("loginFail", false);
         return "login";
     }
 
     @PostMapping("/login")
-    public String handleLogin(User loginUser, HttpSession session){
+    public String handleLogin(User loginUser,Model model, HttpSession session){
         User foundUser = userRepository.findOne(loginUser.getSsoId());
         if(foundUser == null || !foundUser.getPassword().equals(loginUser.getPassword())){
-            return "redirect:/login";
+            model.addAttribute("loginFail", true);
+            return "login";
         }
         session.setAttribute("user", foundUser);
         
