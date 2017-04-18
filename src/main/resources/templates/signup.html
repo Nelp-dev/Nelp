@@ -9,7 +9,7 @@
 <div class="container">
     <form class="form-default" action="#" th:action="@{/signup}" th:object="${user}" method="post">
         <h2 class="form-heading">Sign Up</h2>
-        <p th:if="${signupFail}" style="color: red">Already ID is existed</p>
+        <p th:if="${isSignupFail}" style="color: red">Already ID is existed</p>
         <input class="form-control" id="signup_ssoId" type="email" th:field="*{ssoId}" placeholder="ID" required="required" />
         <input class="form-control" id="signup_name" type="text" th:field="*{name}" placeholder="Name" required="required"/>
         <input class="form-control" id="signup_password" type="password" th:field="*{password}" placeholder="Password" required="required"/>
