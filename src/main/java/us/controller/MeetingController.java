@@ -8,14 +8,21 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import us.model.*;
-import us.repository.MeetingRepository;
-import us.repository.ParticipationRepository;
-import us.repository.PaymentRepository;
-import us.repository.UserRepository;
+import us.repository.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+
+class UserAndMoneyData{
+    public String user_name;
+    public int amount;
+
+    public UserAndMoneyData(String user_name, int amount) {
+        this.user_name = user_name;
+        this.amount = amount;
+    }
+}
 
 @Controller
 @RequestMapping(value = "/meetings")
@@ -28,6 +35,8 @@ public class MeetingController {
     private ParticipationRepository participationRepository;
     @Autowired
     private PaymentRepository paymentRepository;
+    @Autowired
+    private MoneyToSendRepository moneyToSendRepository;
 
 
     @GetMapping(value = "/new")
@@ -59,25 +68,34 @@ public class MeetingController {
 
         User user = (User)session.getAttribute("user");
 
+        List<UserAndMoneyData> money_to_receive_list = new ArrayList<>();
 
         if (user != null) {
             model.addAttribute("isParticipated", meeting.isParticipant(user));
-            List<User> money_to_user_list = getParticipantList(meeting);
-            for (User participant : money_to_user_list) {
-                if (participant.getSsoId().equals(user.getSsoId())) {
-                    money_to_user_list.remove(participant);
-                    break;
-                }
-            }
-            model.addAttribute("money_to_user_list", money_to_user_list);
+            money_to_receive_list = getMoneyToReceiveDataList(meeting, user);
         } else {
-            model.addAttribute("isParticipate", false);
+            model.addAttribute("isParticipated", false);
         }
         model.addAttribute("participant_list", getParticipantList(meeting));
         model.addAttribute("meeting", meeting);
         model.addAttribute("payment", new Payment());
         model.addAttribute("all_payment_list", getPaymentList(meeting));
+        model.addAttribute("money_to_receive_list", money_to_receive_list);
         return "detail_meeting";
+    }
+
+    @PostMapping(value = "/{id}/update")
+    public String updateMeeting(@PathVariable int id, Meeting modifiedMeeting, HttpSession session) {
+        Meeting meeting = meetingRepository.findOne(id);
+
+        meeting.setDate(modifiedMeeting.getDate());
+        meeting.setLocation(modifiedMeeting.getLocation());
+        meeting.setName(modifiedMeeting.getName());
+        meeting.setTime(modifiedMeeting.getTime());
+
+        meetingRepository.save(meeting);
+
+        return "redirect:/meetings/" + meeting.getId();
     }
 
     @PostMapping(value = "/{id}/join")
@@ -113,7 +131,7 @@ public class MeetingController {
         return "redirect:/meetings/" + meeting.getId();
     }
 
-    @GetMapping(value = "/{id}/payment/new")
+    @PostMapping(value = "/{id}/payment")
     public String addPayment(@PathVariable int id, Payment payment) {
         Payment addPayment = new Payment();
         addPayment.setAmount(payment.getAmount());
@@ -123,6 +141,8 @@ public class MeetingController {
         participation.addPayment(addPayment);
         addPayment.setParticipation(participation);
         paymentRepository.save(addPayment);
+
+        updateMoneyToSend(addPayment);
         return "redirect:/meetings/" + id;
     }
 
@@ -155,5 +175,31 @@ public class MeetingController {
             }
         }
         return allPaymentList;
+    }
+
+    private void updateMoneyToSend(Payment payment) {
+        Meeting meeting = payment.getParticipation().getMeeting();
+        User payer = payment.getParticipation().getUser();
+        List<User> others = getParticipantList(meeting);
+        others.remove(payer);
+
+        int amount = payment.getAmount();
+        int participants_num = others.size() + 1;
+        int price_per_person = amount / participants_num;
+
+        for(User user : others) {
+            moneyToSendRepository.save(new MoneyToSend(price_per_person, user, payer, meeting));
+        }
+    }
+
+    private List<UserAndMoneyData> getMoneyToReceiveDataList(Meeting meeting, User user) {
+        List<UserAndMoneyData> moneyToReceiveDataList = new ArrayList<>();
+        List<MoneyToSend> moneyToSendList = moneyToSendRepository.findByMeeting(meeting);
+        for(MoneyToSend moneyToSend : moneyToSendList) {
+            if(moneyToSend.getRecipient().getSsoId().equals(user.getSsoId())) {
+                moneyToReceiveDataList.add(new UserAndMoneyData(moneyToSend.getGiver().getName(), moneyToSend.getAmount()));
+            }
+        }
+        return moneyToReceiveDataList;
     }
 }
