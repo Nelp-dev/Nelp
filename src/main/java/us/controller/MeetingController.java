@@ -72,7 +72,7 @@ public class MeetingController {
 
         if (user != null) {
             model.addAttribute("isParticipated", meeting.isParticipant(user));
-            money_to_receive_list = getMoneyToReceiveDataList(meeting, user);
+            money_to_receive_list = getMoneyToSendDataList(meeting, user);
         } else {
             model.addAttribute("isParticipated", false);
         }
@@ -188,18 +188,35 @@ public class MeetingController {
         int price_per_person = amount / participants_num;
 
         for(User user : others) {
-            moneyToSendRepository.save(new MoneyToSend(price_per_person, user, payer, meeting));
+            MoneyToSend moneyToSend = moneyToSendRepository.findBySender(user);
+            if(moneyToSend==null) {
+                moneyToSend = new MoneyToSend(price_per_person, user, payer, meeting);
+            }
+            else {
+                moneyToSend.setAmount(moneyToSend.getAmount() + price_per_person);
+            }
+            moneyToSendRepository.save(moneyToSend);
         }
     }
 
-    private List<UserAndMoneyData> getMoneyToReceiveDataList(Meeting meeting, User user) {
-        List<UserAndMoneyData> moneyToReceiveDataList = new ArrayList<>();
+    private List<UserAndMoneyData> getMoneyToSendDataList(Meeting meeting, User user) {
+        List<UserAndMoneyData> moneyToSendDataList = new ArrayList<>();
         List<MoneyToSend> moneyToSendList = moneyToSendRepository.findByMeeting(meeting);
+
         for(MoneyToSend moneyToSend : moneyToSendList) {
-            if(moneyToSend.getRecipient().getSsoId().equals(user.getSsoId())) {
-                moneyToReceiveDataList.add(new UserAndMoneyData(moneyToSend.getGiver().getName(), moneyToSend.getAmount()));
+            if(moneyToSend.getSender().getSsoId().equals(user.getSsoId())) {
+                UserAndMoneyData userAndMoneyData = new UserAndMoneyData(moneyToSend.getRecipient().getName(), moneyToSend.getAmount());
+                moneyToSendDataList.add(userAndMoneyData);
             }
         }
-        return moneyToReceiveDataList;
+
+        for(MoneyToSend moneyToSend : moneyToSendList) {
+            if(moneyToSend.getRecipient().getSsoId().equals(user.getSsoId())) {
+                UserAndMoneyData userAndMoneyData = new UserAndMoneyData(moneyToSend.getSender().getName(), -1 * (moneyToSend.getAmount()));
+                moneyToSendDataList.add(userAndMoneyData);
+            }
+        }
+
+        return moneyToSendDataList;
     }
 }
