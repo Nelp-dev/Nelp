@@ -14,9 +14,17 @@ $(window).click(function (event) {
 
 $("#update_payment_dialog").on('show.bs.modal', function (event) {
     var payment = $(event.relatedTarget);
-    var name = payment.attr("name");
-    var amount = payment.attr("data");
+    var payer = payment.attr("name");
+    var paymentId = payment.attr("id");
+    var paymentName = payment.attr("value");
+    var paymentAmount = payment.attr("data");
+
+    $("#update_payment_owner_name").val(payer);
+    $("#update_payment_amount").val(paymentAmount);
+    $("#update_payment_name").val(paymentName);
+
     var modal = $(this);
-    modal.find('.modal-body input').eq(0).val(amount);
-    modal.find('.modal-body input').eq(1).val(name);
+    var updateURL = $(location).attr('pathname') + '/payment/' + paymentId + '/update';
+    modal.find('.modal-content').attr("action",updateURL);
 });
+

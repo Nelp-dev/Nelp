@@ -72,7 +72,12 @@
                     <td>
                         <div th:each="payment : ${all_payment_list}">
                             <div th:if="${payment.isOwner(participant.ssoId)}">
-                                <div style="font-size:15px;" data-toggle="modal" data-target="#update_payment_dialog" th:number="${payment.id}" th:name="${payment.name}" th:data="${payment.amount}" th:text="${payment.amount} + ' ' + ${payment.name}"></div>
+                                <div th:if="${isParticipated}">
+                                    <div style="font-size:15px;" data-toggle="modal" data-target="#update_payment_dialog" th:id="${payment.id}" th:name="${participant.ssoId}" th:value="${payment.name}" th:data="${payment.amount}" th:text="${payment.amount} + ' ' + ${payment.name}"></div>
+                                </div>
+                                <div th:unless="${isParticipated}">
+                                    <div style="font-size:15px;" th:text="${payment.amount} + ' ' + ${payment.name}"></div>
+                                </div>
                             </div>
                         </div>
                     </td>
@@ -153,7 +158,7 @@
 
     <div class="modal fade" id="update_payment_dialog" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-sm">
-            <form class="modal-content" th:object="${payment}" action="#" th:action="@{'/meetings/' + ${meeting.id} + '/payment/update'}" method="get">
+            <form class="modal-content" th:object="${payment}" action="#" th:action="@{'/meetings/' + ${meeting.id}}" method="post">
                 <div class="modal-header">
                     <button id="update_payment_dialog_close_btn" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h5 class="modal-title">결제내역 수정</h5>

@@ -145,17 +145,23 @@ public class MeetingController {
         updateMoneyToSend(addPayment);
         return "redirect:/meetings/" + id;
     }
-    @GetMapping(value = "/{id}/payment/update")
-    public String updatePayment(@PathVariable int id, Payment payment) {
-        int paymentId = 0;
-        Payment updatePayment = paymentRepository.findOne(paymentId);
-        updatePayment.setAmount(payment.getAmount());
-        updatePayment.setName(payment.getName());
-        updatePayment.setSsoId(payment.getSsoId());
-        Participation participation = participationRepository.findOne(new ParticipationId(id, updatePayment.getSsoId()));
-        participation.addPayment(updatePayment);
-        updatePayment.setParticipation(participation);
-        paymentRepository.save(updatePayment);
+    @PostMapping(value = "/{id}/payment/{paymentId}/update")
+    public String updatePayment(@PathVariable int id,@PathVariable int paymentId, Payment payment) {
+        Payment findPayment = paymentRepository.findOne(paymentId);
+
+        Participation oldParticipation = participationRepository.findOne(new ParticipationId(id, findPayment.getSsoId()));
+        oldParticipation.removePayment(findPayment);
+
+        findPayment.setAmount(payment.getAmount());
+        findPayment.setName(payment.getName());
+        findPayment.setSsoId(payment.getSsoId());
+
+        Participation newParticipation = participationRepository.findOne(new ParticipationId(id, findPayment.getSsoId()));
+        newParticipation.addPayment(findPayment);
+        findPayment.setParticipation(newParticipation);
+        paymentRepository.save(findPayment);
+
+        updateMoneyToSend(findPayment);
         return "redirect:/meetings/" + id;
     }
 
