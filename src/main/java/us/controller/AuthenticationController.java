@@ -43,11 +43,18 @@ public class AuthenticationController {
     @GetMapping("/signup")
     public String getSignUpForm(Model model){
         model.addAttribute("user",new User());
+        model.addAttribute("signupFail",false);
         return "signup";
     }
 
     @PostMapping("/signup")
-    public String handleSignup(User user){
+    public String handleSignup(User user, Model model){
+        for(User registeredUser : userRepository.findAll()) {
+            if(user.getSsoId().equals(registeredUser.getSsoId())) {
+                model.addAttribute("signupFail",true);
+                return "signup";
+            }
+        }
         userRepository.save(user);
         return "redirect:/";
     }
