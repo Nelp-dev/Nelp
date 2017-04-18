@@ -6,7 +6,7 @@ import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import us.base.BaseTest;
+import us.base.HaveUserBaseTest;
 
 import static org.hamcrest.CoreMatchers.is;
 
@@ -14,7 +14,7 @@ import static org.hamcrest.CoreMatchers.is;
 @SpringBootTest
 public class DetailMeetingPageTest extends HaveUserBaseTest {
     public DetailMeetingPageTest() {
-        START_URL = BASE_URL + "meetings/17";
+        START_URL = BASE_URL + "meetings/2";
     }
 
     @Test
@@ -40,15 +40,4 @@ public class DetailMeetingPageTest extends HaveUserBaseTest {
         Assert.assertThat(driver.getTitle(), is("Detail Meeting"));
         Assert.assertThat(driver.getCurrentUrl(), is(START_URL));
     }
-
-    @Test
-    public void test_modify_payment_info(){
-        /* Can Modify Payment Info when logged-in */
-        // Login
-        login(test_users.get(0));
-        
-
-
-    }
-
 }
