@@ -45,6 +45,8 @@ public class Participation {
         return user;
     }
 
+    public Meeting getMeeting() { return meeting; }
+
     public void addPayment(Payment payment) {
         this.paymentList.add(payment);
     }

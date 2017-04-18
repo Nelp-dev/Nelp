@@ -15,7 +15,6 @@
         <button th:if="${isParticipated}" type="button" id="meeting_option_btn" class="btn pull-right btn-success" data-toggle="modal" data-target="#meeting_option_dialog">설정</button>
         <div class="modal fade" id="meeting_option_dialog" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-sm">
-
                 <form class="modal-content" th:object="${meeting}" action="#" th:action="@{'/meetings/' + ${meeting.id} + '/update'}" method="post">
                     <div class="modal-header">
                         <button id="meeting_option_dialog_close_btn" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -133,8 +132,9 @@
             </tr>
             </thead>
             <tbody id="money_to_receive_list">
-                <tr th:each="user : ${money_to_user_list}">
-                    <td th:text="${user.name}"></td>
+                <tr th:each="money_to_receive : ${money_to_receive_list}">
+                    <td th:text="${money_to_receive.user_name}"></td>
+                    <td th:text="${money_to_receive.amount}"></td>
                 </tr>
             </tbody>
             <thead>
@@ -142,6 +142,12 @@
                 <th>보낼 돈</th>
             </tr>
             </thead>
+            <tbody id="money_to_send_list">
+                <tr th:each="money_to_receive : ${money_to_receive_list}">
+                    <td th:text="${money_to_receive.user_name}"></td>
+                    <td th:text="${money_to_receive.amount}"></td>
+                </tr>
+            </tbody>
         </table>
     </div>
 
