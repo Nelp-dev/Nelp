@@ -1,4 +1,4 @@
-package us;
+package us.base;
 
 import org.junit.AfterClass;
 import org.junit.Before;
