@@ -18,7 +18,7 @@ public class AuthenticationController {
     @GetMapping("/login")
     public String getLoginForm(Model model){
         model.addAttribute("user",new User());
-        model.addAttribute("loginFail", false);
+        model.addAttribute("isLoginFail", false);
         return "login";
     }
 
@@ -26,7 +26,7 @@ public class AuthenticationController {
     public String handleLogin(User loginUser,Model model, HttpSession session){
         User foundUser = userRepository.findOne(loginUser.getSsoId());
         if(foundUser == null || !foundUser.getPassword().equals(loginUser.getPassword())){
-            model.addAttribute("loginFail", true);
+            model.addAttribute("isLoginFail", true);
             return "login";
         }
         session.setAttribute("user", foundUser);
@@ -43,11 +43,18 @@ public class AuthenticationController {
     @GetMapping("/signup")
     public String getSignUpForm(Model model){
         model.addAttribute("user",new User());
+        model.addAttribute("isSignupFail",false);
         return "signup";
     }
 
     @PostMapping("/signup")
-    public String handleSignup(User user){
+    public String handleSignup(User user, Model model){
+        for(User registeredUser : userRepository.findAll()) {
+            if(user.getSsoId().equals(registeredUser.getSsoId())) {
+                model.addAttribute("isSignupFail",true);
+                return "signup";
+            }
+        }
         userRepository.save(user);
         return "redirect:/";
     }

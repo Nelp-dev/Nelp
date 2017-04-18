@@ -10,7 +10,7 @@
 <div class="container">
    <form class="form-default" action="#" th:action="@{/login}" th:object="${user}" method="post">
        <h2 class="form-heading">Please Login</h2>
-       <p th:if="${loginFail}" style="color: red">Please check your ID or password</p>
+       <p th:if="${isLoginFail}" style="color: red">Please check your ID or password</p>
        <input id="login_email_input" class="form-control" type="email" th:field="*{ssoId}" placeholder="Email address" required="required" autofocus="autofocus"/>
 
        <input id="login_password_input" class="form-control" type="password" th:field="*{password}" placeholder="Password" required="required"/>
