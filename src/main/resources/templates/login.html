@@ -9,15 +9,15 @@
 
 <div class="container">
    <form class="form-default" action="#" th:action="@{/login}" th:object="${user}" method="post">
-        <h2 class="form-heading">Please Login</h2>
-        <input id="login_email_input" class="form-control" type="email" th:field="*{ssoId}" placeholder="Email address" required="required" autofocus="autofocus"/>
+       <h2 class="form-heading">Please Login</h2>
+       <p th:if="${loginFail}" style="color: red">Please check your ID or password</p>
+       <input id="login_email_input" class="form-control" type="email" th:field="*{ssoId}" placeholder="Email address" required="required" autofocus="autofocus"/>
 
-        <input id="login_password_input" class="form-control" type="password" th:field="*{password}" placeholder="Password" required="required"/>
-        <button id="login_submit_btn" class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
-        <button class="btn btn-lg btn-warning btn-block" type="reset">Reset</button>
+       <input id="login_password_input" class="form-control" type="password" th:field="*{password}" placeholder="Password" required="required"/>
+       <button style="margin-top: 10px;" id="login_submit_btn" class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+       <a id="login_signup_btn" class="btn btn-lg btn-warning btn-block" href="/signup">Sign-Up</a>
     </form>
-
-</div> <!-- /container -->
+</div>
 
 </body>
 </html>
