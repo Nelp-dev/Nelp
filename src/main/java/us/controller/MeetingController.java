@@ -68,7 +68,7 @@ public class MeetingController {
 
         User user = (User)session.getAttribute("user");
 
-        List<UserAndMoneyData> money_to_receive_list = null;
+        List<UserAndMoneyData> money_to_receive_list = new ArrayList<>();
 
         if (user != null) {
             model.addAttribute("isParticipated", meeting.isParticipant(user));
