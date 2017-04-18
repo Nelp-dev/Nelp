@@ -125,6 +125,19 @@ public class MeetingController {
         paymentRepository.save(addPayment);
         return "redirect:/meetings/" + id;
     }
+    @GetMapping(value = "/{id}/payment/update")
+    public String updatePayment(@PathVariable int id, Payment payment) {
+        int paymentId = 0;
+        Payment updatePayment = paymentRepository.findOne(paymentId);
+        updatePayment.setAmount(payment.getAmount());
+        updatePayment.setName(payment.getName());
+        updatePayment.setSsoId(payment.getSsoId());
+        Participation participation = participationRepository.findOne(new ParticipationId(id, updatePayment.getSsoId()));
+        participation.addPayment(updatePayment);
+        updatePayment.setParticipation(participation);
+        paymentRepository.save(updatePayment);
+        return "redirect:/meetings/" + id;
+    }
 
     private void participate(Meeting meeting, User user) {
         Participation participation = new Participation(meeting, user);
