@@ -11,3 +11,22 @@ $(window).click(function (event) {
         $("#add_payment_dialog").style.display = "none";
     }
 });
+
+$("#url_copy_btn").click(function () {
+    var textArea = document.createElement("textarea");
+    textArea.value = document.getElementById('meeting_url').valueOf();
+    document.body.appendChild(textArea);
+    textArea.select();
+    var msg;
+    try {
+        var successful = document.execCommand('copy');
+        msg = successful ? 'success' : 'fail';
+    }catch (err) {
+        msg = 'fail';
+    }
+    document.body.removeChild(textArea);
+    var popup = document.getElementById("url_copy_btn_popup");
+    popup.innerHTML = msg;
+    popup.classList.toggle("show");
+    popup.style.opacity = 0;
+});
