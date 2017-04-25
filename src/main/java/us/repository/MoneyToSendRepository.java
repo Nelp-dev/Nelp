@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface MoneyToSendRepository extends CrudRepository<MoneyToSend, Integer> {
     List<MoneyToSend> findByMeeting(Meeting meeting);
-    MoneyToSend findBySender(User user);
+    MoneyToSend findBySender(User sender);
 }

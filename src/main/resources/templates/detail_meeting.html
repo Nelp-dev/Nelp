@@ -137,6 +137,18 @@
                     <td th:text="${money_to_receive.amount}"></td>
                 </tr>
             </tbody>
+
+            <thead>
+            <tr>
+                <th>보낼 돈</th>
+            </tr>
+            </thead>
+            <tbody id="money_to_send_list">
+            <tr th:each="money_to_send : ${money_to_send_list}">
+                <td th:text="${money_to_send.user_name}"></td>
+                <td th:text="${money_to_send.amount}"></td>
+            </tr>
+            </tbody>
         </table>
     </div>
 </div>

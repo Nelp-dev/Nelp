@@ -68,11 +68,21 @@ public class MeetingController {
 
         User user = (User)session.getAttribute("user");
 
+        List<UserAndMoneyData> money_to_send_list = new ArrayList<>();
         List<UserAndMoneyData> money_to_receive_list = new ArrayList<>();
 
         if (user != null) {
             model.addAttribute("isParticipated", meeting.isParticipant(user));
-            money_to_receive_list = getMoneyToSendDataList(meeting, user);
+            money_to_send_list = getDataListOfMoneyToSend(meeting, user);
+            money_to_receive_list = getDataListOfMoneyToReceive(meeting, user);
+
+            mergeMoneyToHandleDataList(money_to_send_list);
+            removeEmptyValueInMoneyToHandleDataList(money_to_send_list);
+            mergeMoneyToHandleDataList(money_to_receive_list);
+            removeEmptyValueInMoneyToHandleDataList(money_to_receive_list);
+            mergeMoneyToHandleDataList(money_to_send_list, money_to_receive_list);
+            removeEmptyValueInMoneyToHandleDataList(money_to_send_list);
+            removeEmptyValueInMoneyToHandleDataList(money_to_receive_list);
         } else {
             model.addAttribute("isParticipated", false);
         }
@@ -80,6 +90,7 @@ public class MeetingController {
         model.addAttribute("meeting", meeting);
         model.addAttribute("payment", new Payment());
         model.addAttribute("all_payment_list", getPaymentList(meeting));
+        model.addAttribute("money_to_send_list", money_to_send_list);
         model.addAttribute("money_to_receive_list", money_to_receive_list);
         return "detail_meeting";
     }
@@ -184,39 +195,83 @@ public class MeetingController {
         others.remove(payer);
 
         int amount = payment.getAmount();
-        int participants_num = others.size() + 1;
-        int price_per_person = amount / participants_num;
+        int price_per_person = amount / (others.size() + 1);
 
         for(User user : others) {
-            MoneyToSend moneyToSend = moneyToSendRepository.findBySender(user);
-            if(moneyToSend==null) {
-                moneyToSend = new MoneyToSend(price_per_person, user, payer, meeting);
-            }
-            else {
-                moneyToSend.setAmount(moneyToSend.getAmount() + price_per_person);
-            }
+            MoneyToSend moneyToSend = new MoneyToSend(price_per_person, user, payer, meeting);
             moneyToSendRepository.save(moneyToSend);
         }
     }
 
-    private List<UserAndMoneyData> getMoneyToSendDataList(Meeting meeting, User user) {
-        List<UserAndMoneyData> moneyToSendDataList = new ArrayList<>();
+    private List<UserAndMoneyData> getDataListOfMoneyToSend(Meeting meeting, User user) {
+        List<UserAndMoneyData> dataListOfMoneyToSend = new ArrayList<>();
         List<MoneyToSend> moneyToSendList = moneyToSendRepository.findByMeeting(meeting);
 
         for(MoneyToSend moneyToSend : moneyToSendList) {
             if(moneyToSend.getSender().getSsoId().equals(user.getSsoId())) {
                 UserAndMoneyData userAndMoneyData = new UserAndMoneyData(moneyToSend.getRecipient().getName(), moneyToSend.getAmount());
-                moneyToSendDataList.add(userAndMoneyData);
+                dataListOfMoneyToSend.add(userAndMoneyData);
             }
         }
+
+        return dataListOfMoneyToSend;
+    }
+
+    private List<UserAndMoneyData> getDataListOfMoneyToReceive(Meeting meeting, User user) {
+        List<UserAndMoneyData> dataListOfMoneyToReceive = new ArrayList<>();
+        List<MoneyToSend> moneyToSendList = moneyToSendRepository.findByMeeting(meeting);
 
         for(MoneyToSend moneyToSend : moneyToSendList) {
             if(moneyToSend.getRecipient().getSsoId().equals(user.getSsoId())) {
-                UserAndMoneyData userAndMoneyData = new UserAndMoneyData(moneyToSend.getSender().getName(), -1 * (moneyToSend.getAmount()));
-                moneyToSendDataList.add(userAndMoneyData);
+                UserAndMoneyData userAndMoneyData = new UserAndMoneyData(moneyToSend.getSender().getName(), moneyToSend.getAmount());
+                dataListOfMoneyToReceive.add(userAndMoneyData);
             }
         }
 
-        return moneyToSendDataList;
+        return dataListOfMoneyToReceive;
     }
+
+    private void removeEmptyValueInMoneyToHandleDataList(List<UserAndMoneyData> dataListOfMoneyToHandle) {
+        if(dataListOfMoneyToHandle!=null) {
+            dataListOfMoneyToHandle.removeIf( userAndMoneyData -> userAndMoneyData.amount == 0 );
+        }
+    }
+
+    private void mergeMoneyToHandleDataList(List<UserAndMoneyData> dataListOfMoneyToHandle) {
+        if(dataListOfMoneyToHandle!=null) {
+            int data_size = dataListOfMoneyToHandle.size();
+
+            for (int i = 0; i < data_size; i++) {
+                for (int j = i + 1; j < data_size; j++) {
+                    UserAndMoneyData origin_data = dataListOfMoneyToHandle.get(i);
+                    UserAndMoneyData target_data = dataListOfMoneyToHandle.get(j);
+                    if (origin_data.user_name.equals(target_data.user_name)) {
+                        target_data.amount += origin_data.amount;
+                        origin_data.amount = 0;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    private void mergeMoneyToHandleDataList(List<UserAndMoneyData> dataListOfMoneyToSend, List<UserAndMoneyData> dataListOfMoneyToReceive) {
+        for(UserAndMoneyData userAndMoneyDataToSend : dataListOfMoneyToSend) {
+            for(UserAndMoneyData userAndMoneyDataToReceive : dataListOfMoneyToReceive) {
+                if(userAndMoneyDataToSend.user_name.equals(userAndMoneyDataToReceive.user_name)) {
+                    int amount_diff = userAndMoneyDataToSend.amount - userAndMoneyDataToReceive.amount;
+                    if(amount_diff >= 0) {
+                        userAndMoneyDataToSend.amount = amount_diff;
+                        userAndMoneyDataToReceive.amount = 0;
+                    }
+                    else {
+                        userAndMoneyDataToReceive.amount = -1 * amount_diff;
+                        userAndMoneyDataToSend.amount = 0;
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
 }
