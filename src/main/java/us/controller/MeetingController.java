@@ -145,6 +145,25 @@ public class MeetingController {
         updateMoneyToSend(addPayment);
         return "redirect:/meetings/" + id;
     }
+    @PostMapping(value = "/{id}/payment/{paymentId}/update")
+    public String updatePayment(@PathVariable int id,@PathVariable int paymentId, Payment payment) {
+        Payment findPayment = paymentRepository.findOne(paymentId);
+
+        Participation oldParticipation = participationRepository.findOne(new ParticipationId(id, findPayment.getSsoId()));
+        oldParticipation.removePayment(findPayment);
+
+        findPayment.setAmount(payment.getAmount());
+        findPayment.setName(payment.getName());
+        findPayment.setSsoId(payment.getSsoId());
+
+        Participation newParticipation = participationRepository.findOne(new ParticipationId(id, findPayment.getSsoId()));
+        newParticipation.addPayment(findPayment);
+        findPayment.setParticipation(newParticipation);
+        paymentRepository.save(findPayment);
+
+        updateMoneyToSend(findPayment);
+        return "redirect:/meetings/" + id;
+    }
 
     private void participate(Meeting meeting, User user) {
         Participation participation = new Participation(meeting, user);
