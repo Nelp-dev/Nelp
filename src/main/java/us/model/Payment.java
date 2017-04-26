@@ -66,14 +66,4 @@ public class Payment {
         return this.ssoId.equals(ssoId);
     }
 
-    @Override
-    public String toString() {
-        return "Payment{" +
-                "id=" + id +
-                ", participation=" + participation +
-                ", name='" + name + '\'' +
-                ", ssoId='" + ssoId + '\'' +
-                ", amount=" + amount +
-                '}';
-    }
 }
