@@ -71,7 +71,7 @@
                         <div th:each="payment : ${all_payment_list}">
                             <div th:if="${payment.isOwner(participant.ssoId)}">
                                 <div th:if="${isParticipated}">
-                                    <div style="font-size:15px;" data-toggle="modal" data-target="#update_payment_dialog" th:id="${payment.id}" th:name="${participant.ssoId}" th:value="${payment.name}" th:data="${payment.amount}" th:text="${payment.amount} + ' ' + ${payment.name}"></div>
+                                    <div style="font-size:15px;" data-toggle="modal" data-target="#update_payment_dialog" th:id="${payment.id}" th:value="${participant.ssoId}" th:name="${payment.name}" th:data="${payment.amount}" th:text="${payment.amount} + ' ' + ${payment.name}"></div>
                                 </div>
                                 <div th:unless="${isParticipated}">
                                     <div style="font-size:15px;" th:text="${payment.amount} + ' ' + ${payment.name}"></div>

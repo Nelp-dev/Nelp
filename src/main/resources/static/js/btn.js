@@ -14,9 +14,9 @@ $(window).click(function (event) {
 
 $("#update_payment_dialog").on('show.bs.modal', function (event) {
     var payment = $(event.relatedTarget);
-    var payer = payment.attr("name");
+    var payer = payment.attr("value");
     var paymentId = payment.attr("id");
-    var paymentName = payment.attr("value");
+    var paymentName = payment.attr("name");
     var paymentAmount = payment.attr("data");
 
     $("#update_payment_owner_name").val(payer);
