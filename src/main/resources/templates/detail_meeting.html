@@ -137,9 +137,9 @@
             </tr>
             </thead>
             <tbody id="money_to_receive_list">
-                <tr th:each="money_to_receive : ${money_to_receive_list}">
-                    <td th:text="${money_to_receive.user_name}"></td>
-                    <td th:text="${money_to_receive.amount}"></td>
+                <tr th:each="money_to_receive : ${money_to_receive_map}">
+                    <td th:text="${money_to_receive.key}"></td>
+                    <td th:text="${money_to_receive.value}"></td>
                 </tr>
             </tbody>
 
@@ -149,9 +149,9 @@
             </tr>
             </thead>
             <tbody id="money_to_send_list">
-            <tr th:each="money_to_send : ${money_to_send_list}">
-                <td th:text="${money_to_send.user_name}"></td>
-                <td th:text="${money_to_send.amount}"></td>
+            <tr th:each="money_to_send : ${money_to_send_map}">
+                <td th:text="${money_to_send.key}"></td>
+                <td th:text="${money_to_send.value}"></td>
             </tr>
             </tbody>
         </table>
