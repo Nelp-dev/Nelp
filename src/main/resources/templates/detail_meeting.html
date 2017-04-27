@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"> 
 <head> 
     <head th:include="include/header :: header"></head>
+    <link href="/css/popup.css" rel="stylesheet"></link>
     <title>Detail Meeting</title> 
 </head> 
 <body>
@@ -83,6 +84,7 @@
             </tbody>
         </table>
         <strong>모임신청 URL : </strong><a id="meeting_url" th:href="${meeting.url}" th:text="${meeting.url}"></a>
+        <button id="url_copy_btn" class="btn btn-success">Copy<span class="popup_text" id="url_copy_btn_popup"></span></button>
         <button th:if="${isParticipated}" type="button" id="add_payment_btn" class="btn pull-right btn-success" data-toggle="modal" data-target="#add_payment_dialog">결제내역 추가</button>
 
         <div class="modal fade" id="add_payment_dialog" role="dialog" aria-hidden="true">
