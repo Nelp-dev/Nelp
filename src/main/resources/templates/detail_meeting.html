@@ -142,20 +142,20 @@
                     <td th:text="${money_to_receive.amount}"></td>
                 </tr>
             </tbody>
+
             <thead>
             <tr>
                 <th>보낼 돈</th>
             </tr>
             </thead>
             <tbody id="money_to_send_list">
-                <tr th:each="money_to_receive : ${money_to_receive_list}">
-                    <td th:text="${money_to_receive.user_name}"></td>
-                    <td th:text="${money_to_receive.amount}"></td>
-                </tr>
+            <tr th:each="money_to_send : ${money_to_send_list}">
+                <td th:text="${money_to_send.user_name}"></td>
+                <td th:text="${money_to_send.amount}"></td>
+            </tr>
             </tbody>
         </table>
     </div>
-
     <div class="modal fade" id="update_payment_dialog" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-sm">
             <form class="modal-content" th:object="${payment}" action="#" th:action="@{'/meetings/' + ${meeting.id}}" method="post">
@@ -182,7 +182,6 @@
             </form>
         </div>
     </div>
-
 </div>
 
 <head th:include="include/js :: script"></head>
