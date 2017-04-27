@@ -65,4 +65,5 @@ public class Payment {
     public boolean isOwner(String ssoId) {
         return this.ssoId.equals(ssoId);
     }
+
 }

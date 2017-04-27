@@ -10,7 +10,7 @@
 
     <div class="jumbotron">
 
-         <span style="font-size:60px;">Meeting Information</span>
+         <p style="font-size:60px;" th:text="${meeting.name}"></p>
 
         <button th:if="${isParticipated}" type="button" id="meeting_option_btn" class="btn pull-right btn-success" data-toggle="modal" data-target="#meeting_option_dialog">설정</button>
         <div class="modal fade" id="meeting_option_dialog" role="dialog" aria-hidden="true">
@@ -38,7 +38,6 @@
         <table class="table table-striped"> 
             <thead>
                 <tr> 
-                    <th>이름</th> 
                     <th>장소</th>
                     <th>날짜</th>
                     <th>시간</th>
@@ -46,7 +45,6 @@
              </thead>
             <tbody>
                 <tr> 
-                    <td id="meeting_name" th:text="${meeting.name}"></td>
                     <td id="meeting_location" th:text="${meeting.location}"></td>
                     <td id="meeting_date" th:text="${meeting.date}"></td>
                     <td id="meeting_time" th:text="${meeting.time}"></td>
@@ -72,7 +70,12 @@
                     <td>
                         <div th:each="payment : ${all_payment_list}">
                             <div th:if="${payment.isOwner(participant.ssoId)}">
-                                <span style="font-size:15px;" th:text="${payment.amount} + ' ' + ${payment.name}"></span>
+                                <div th:if="${isParticipated}">
+                                    <div style="font-size:15px;" data-toggle="modal" data-target="#update_payment_dialog" th:id="${payment.id}" th:value="${participant.ssoId}" th:name="${payment.name}" th:data="${payment.amount}" th:text="${payment.amount} + ' ' + ${payment.name}"></div>
+                                </div>
+                                <div th:unless="${isParticipated}">
+                                    <div style="font-size:15px;" th:text="${payment.amount} + ' ' + ${payment.name}"></div>
+                                </div>
                             </div>
                         </div>
                     </td>
@@ -150,6 +153,32 @@
             </tr>
             </tbody>
         </table>
+    </div>
+    <div class="modal fade" id="update_payment_dialog" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <form class="modal-content" th:object="${payment}" action="#" th:action="@{'/meetings/' + ${meeting.id}}" method="post">
+                <div class="modal-header">
+                    <button id="update_payment_dialog_close_btn" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h5 class="modal-title">결제내역 수정</h5>
+                </div>
+                <div class="modal-body">
+                    <span>결제자 : </span>
+                    <select id="update_payment_owner_name" th:field="*{ssoId}">
+                        <option th:each="participant : ${participant_list}" th:value="${participant.ssoId}" th:text="${participant.name}"></option>
+                    </select>
+                    <br/>
+                    <span>결제금액</span>
+                    <input id="update_payment_amount" class="form-control" th:field="*{amount}" type="number"/>
+                    <br/>
+                    <span>상세내역</span>
+                    <input id="update_payment_name" class="form-control" th:field="*{name}" type="text"/>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" type="submit">OK</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
