@@ -16,20 +16,18 @@ public class Payment {
     private Participation participation;
     @Column(name = "name")
     private String name;
-    @Column(name = "ssoId")
-    private String ssoId;
-
-    public String getSsoId() {
-        return ssoId;
-    }
-
-    public void setSsoId(String ssoId) {
-        this.ssoId = ssoId;
-    }
-
+    @Column(name = "amount")
     private int amount;
 
     public Payment() {}
+
+    public void setUserSsoId(String ssoId) {
+        this.participation.getUser().setSsoId(ssoId);
+    }
+
+    public String getUserSsoId() {
+        return this.participation.getUser().getSsoId();
+    }
 
     public int getId() {
         return id;
@@ -63,7 +61,7 @@ public class Payment {
         this.amount = amount;
     }
     public boolean isOwner(String ssoId) {
-        return this.ssoId.equals(ssoId);
+        return this.participation.getUser().getSsoId().equals(ssoId);
     }
 
 }

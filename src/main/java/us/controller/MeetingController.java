@@ -74,6 +74,7 @@ public class MeetingController {
         model.addAttribute("all_payment_list", getPaymentList(meeting));
         model.addAttribute("money_to_send_map", money_to_send_map);
         model.addAttribute("money_to_receive_map", money_to_receive_map);
+        model.addAttribute("temp_user", new User());
         return "detail_meeting";
     }
 
@@ -125,14 +126,14 @@ public class MeetingController {
     }
 
     @PostMapping(value = "/{id}/payment")
-    public String addPayment(@PathVariable int id, Payment payment) {
+    public String addPayment(@PathVariable int id, Payment payment, User temp_user) {
         Payment addPayment = new Payment();
         addPayment.setAmount(payment.getAmount());
         addPayment.setName(payment.getName());
-        addPayment.setSsoId(payment.getSsoId());
-        Participation participation = participationRepository.findOne(new ParticipationId(id, addPayment.getSsoId()));
+        Participation participation = participationRepository.findOne(new ParticipationId(id, temp_user.getSsoId()));
         participation.addPayment(addPayment);
         addPayment.setParticipation(participation);
+        addPayment.setUserSsoId(temp_user.getSsoId());
         paymentRepository.save(addPayment);
 
         updateMoneyToSend(addPayment);
@@ -140,17 +141,17 @@ public class MeetingController {
     }
 
     @PostMapping(value = "/{id}/payment/{paymentId}/update")
-    public String updatePayment(@PathVariable int id,@PathVariable int paymentId, Payment payment) {
+    public String updatePayment(@PathVariable int id,@PathVariable int paymentId, Payment payment, User temp_user) {
         Payment findPayment = paymentRepository.findOne(paymentId);
 
-        Participation oldParticipation = participationRepository.findOne(new ParticipationId(id, findPayment.getSsoId()));
+        Participation oldParticipation = participationRepository.findOne(new ParticipationId(id, findPayment.getUserSsoId()));
         oldParticipation.removePayment(findPayment);
 
         findPayment.setAmount(payment.getAmount());
         findPayment.setName(payment.getName());
-        findPayment.setSsoId(payment.getSsoId());
+        findPayment.setUserSsoId(temp_user.getSsoId());
 
-        Participation newParticipation = participationRepository.findOne(new ParticipationId(id, findPayment.getSsoId()));
+        Participation newParticipation = participationRepository.findOne(new ParticipationId(id, findPayment.getUserSsoId()));
         newParticipation.addPayment(findPayment);
         findPayment.setParticipation(newParticipation);
         paymentRepository.save(findPayment);
@@ -163,7 +164,7 @@ public class MeetingController {
     public String removePayment(@PathVariable int id,@PathVariable int paymentId, Payment payment) {
         Payment findPayment = paymentRepository.findOne(paymentId);
 
-        Participation participation = participationRepository.findOne(new ParticipationId(id, findPayment.getSsoId()));
+        Participation participation = participationRepository.findOne(new ParticipationId(id, findPayment.getUserSsoId()));
         participation.removePayment(findPayment);
 
 
