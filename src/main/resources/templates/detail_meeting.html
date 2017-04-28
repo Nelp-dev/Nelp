@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"> 
 <head> 
     <head th:include="include/header :: header"></head>
+    <link href="/css/popup.css" rel="stylesheet"></link>
     <title>Detail Meeting</title> 
 </head> 
 <body>
@@ -85,6 +86,9 @@
             </tbody>
         </table>
         <strong>모임신청 URL : </strong><a id="meeting_url" th:href="${meeting.url}" th:text="${meeting.url}"></a>
+        <a id="url_copy_btn" href="#" class="btn btn-info btn-sm">
+            <span class="glyphicon glyphicon-copy"><span class="popup_text" id="url_copy_btn_popup"></span></span>
+        </a>
         <button th:if="${isParticipated}" type="button" id="add_payment_btn" class="btn pull-right btn-success" data-toggle="modal" data-target="#add_payment_dialog">결제내역 추가</button>
 
         <div class="modal fade" id="add_payment_dialog" role="dialog" aria-hidden="true">
@@ -137,25 +141,25 @@
             </tr>
             </thead>
             <tbody id="money_to_receive_list">
-                <tr th:each="money_to_receive : ${money_to_receive_list}">
-                    <td th:text="${money_to_receive.user_name}"></td>
-                    <td th:text="${money_to_receive.amount}"></td>
+                <tr th:each="money_to_receive : ${money_to_receive_map}">
+                    <td th:text="${money_to_receive.key}"></td>
+                    <td th:text="${money_to_receive.value}"></td>
                 </tr>
             </tbody>
+
             <thead>
             <tr>
                 <th>보낼 돈</th>
             </tr>
             </thead>
             <tbody id="money_to_send_list">
-                <tr th:each="money_to_receive : ${money_to_receive_list}">
-                    <td th:text="${money_to_receive.user_name}"></td>
-                    <td th:text="${money_to_receive.amount}"></td>
-                </tr>
+            <tr th:each="money_to_send : ${money_to_send_map}">
+                <td th:text="${money_to_send.key}"></td>
+                <td th:text="${money_to_send.value}"></td>
+            </tr>
             </tbody>
         </table>
     </div>
-
     <div class="modal fade" id="update_payment_dialog" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-sm">
             <form class="modal-content" th:object="${payment}" action="#" th:action="@{'/meetings/' + ${meeting.id}}" method="post">
@@ -182,7 +186,6 @@
             </form>
         </div>
     </div>
-
     <div class="modal fade" id="remove_payment_dialog" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-sm">
             <form class="modal-content" th:object="${payment}" action="#" th:action="@{'/meetings/' + ${meeting.id}}" method="post">

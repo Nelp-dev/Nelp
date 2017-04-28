@@ -12,6 +12,25 @@ $(window).click(function (event) {
     }
 });
 
+$("#url_copy_btn").click(function () {
+    var textArea = document.createElement("textarea");
+    textArea.value = document.getElementById('meeting_url').valueOf();
+    document.body.appendChild(textArea);
+    textArea.select();
+    var msg;
+    try {
+        var successful = document.execCommand('copy');
+        msg = successful ? 'success' : 'fail';
+    }catch (err) {
+        msg = 'fail';
+    }
+    document.body.removeChild(textArea);
+    var popup = document.getElementById("url_copy_btn_popup");
+    popup.innerHTML = msg;
+    popup.classList.toggle("show");
+    popup.style.opacity = 0;
+});
+
 $("#update_payment_dialog").on('show.bs.modal', function (event) {
     var payment = $(event.relatedTarget);
     var payer = payment.attr("value");
@@ -28,6 +47,7 @@ $("#update_payment_dialog").on('show.bs.modal', function (event) {
     modal.find('.modal-content').attr("action",updateURL);
 });
 
+
 $("#remove_payment_dialog").on('show.bs.modal', function (event) {
     var payment = $(event.relatedTarget);
     var payer = payment.attr("value");
@@ -43,3 +63,5 @@ $("#remove_payment_dialog").on('show.bs.modal', function (event) {
     var updateURL = $(location).attr('pathname') + '/payment/' + paymentId + '/remove';
     modal.find('.modal-content').attr("action",updateURL);
 });
+
+

@@ -11,18 +11,7 @@ import us.model.*;
 import us.repository.*;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.List;
-
-class UserAndMoneyData{
-    public String user_name;
-    public int amount;
-
-    public UserAndMoneyData(String user_name, int amount) {
-        this.user_name = user_name;
-        this.amount = amount;
-    }
-}
+import java.util.*;
 
 @Controller
 @RequestMapping(value = "/meetings")
@@ -68,11 +57,14 @@ public class MeetingController {
 
         User user = (User)session.getAttribute("user");
 
-        List<UserAndMoneyData> money_to_receive_list = new ArrayList<>();
+        HashMap<String, Integer> money_to_send_map = new HashMap<>();
+        HashMap<String, Integer> money_to_receive_map = new HashMap<>();
 
         if (user != null) {
             model.addAttribute("isParticipated", meeting.isParticipant(user));
-            money_to_receive_list = getMoneyToReceiveDataList(meeting, user);
+            money_to_send_map = getMapOfMoneyToSend(meeting, user);
+            money_to_receive_map = getMapOfMoneyToReceive(meeting, user);
+            mergeMapsOfMoneyToHandle(money_to_send_map, money_to_receive_map);
         } else {
             model.addAttribute("isParticipated", false);
         }
@@ -80,7 +72,8 @@ public class MeetingController {
         model.addAttribute("meeting", meeting);
         model.addAttribute("payment", new Payment());
         model.addAttribute("all_payment_list", getPaymentList(meeting));
-        model.addAttribute("money_to_receive_list", money_to_receive_list);
+        model.addAttribute("money_to_send_map", money_to_send_map);
+        model.addAttribute("money_to_receive_map", money_to_receive_map);
         return "detail_meeting";
     }
 
@@ -218,22 +211,66 @@ public class MeetingController {
         others.remove(payer);
 
         int amount = payment.getAmount();
-        int participants_num = others.size() + 1;
-        int price_per_person = amount / participants_num;
+        int price_per_person = amount / (others.size() + 1);
 
         for(User user : others) {
-            moneyToSendRepository.save(new MoneyToSend(price_per_person, user, payer, meeting));
+            MoneyToSend moneyToSend = new MoneyToSend(price_per_person, user, payer, meeting);
+            moneyToSendRepository.save(moneyToSend);
         }
     }
 
-    private List<UserAndMoneyData> getMoneyToReceiveDataList(Meeting meeting, User user) {
-        List<UserAndMoneyData> moneyToReceiveDataList = new ArrayList<>();
+    private HashMap<String, Integer> getMapOfMoneyToSend(Meeting meeting, User user) {
+        HashMap<String, Integer> expenseMap = new HashMap<>();
         List<MoneyToSend> moneyToSendList = moneyToSendRepository.findByMeeting(meeting);
+
         for(MoneyToSend moneyToSend : moneyToSendList) {
-            if(moneyToSend.getRecipient().getSsoId().equals(user.getSsoId())) {
-                moneyToReceiveDataList.add(new UserAndMoneyData(moneyToSend.getGiver().getName(), moneyToSend.getAmount()));
+            if(moneyToSend.getSender().getSsoId().equals(user.getSsoId())) {
+                String user_name = moneyToSend.getRecipient().getName();
+                int amount = moneyToSend.getAmount();
+                if(expenseMap.containsKey(user_name))
+                    amount += expenseMap.get(user_name);
+                expenseMap.put(user_name, amount);
             }
         }
-        return moneyToReceiveDataList;
+        return expenseMap;
+    }
+
+    private HashMap<String, Integer> getMapOfMoneyToReceive(Meeting meeting, User user) {
+        HashMap<String, Integer> expenseMap = new HashMap<>();
+        List<MoneyToSend> moneyToSendList = moneyToSendRepository.findByMeeting(meeting);
+
+        for(MoneyToSend moneyToSend : moneyToSendList) {
+            if(moneyToSend.getRecipient().getSsoId().equals(user.getSsoId())) {
+                String user_name = moneyToSend.getSender().getName();
+                int amount = moneyToSend.getAmount();
+                if(expenseMap.containsKey(user_name))
+                    amount += expenseMap.get(user_name);
+                expenseMap.put(user_name, amount);
+            }
+        }
+
+        return expenseMap;
+    }
+
+    private void mergeMapsOfMoneyToHandle(HashMap<String, Integer> dataMapOfMoneyToSend, HashMap<String, Integer> dataMapOfMoneyToReceive) {
+        for(Map.Entry<String, Integer> entry : dataMapOfMoneyToSend.entrySet()) {
+            String user_name = entry.getKey();
+            int send_amount = entry.getValue();
+            if(dataMapOfMoneyToReceive.containsKey(user_name)) {
+                int receive_amount = dataMapOfMoneyToReceive.get(user_name);
+                int amount_diff = send_amount - receive_amount;
+                if(amount_diff >= 0) {
+                    dataMapOfMoneyToSend.put(user_name, amount_diff);
+                    dataMapOfMoneyToReceive.put(user_name, 0);
+                }
+                else {
+                    dataMapOfMoneyToReceive.put(user_name, -1 * amount_diff);
+                    dataMapOfMoneyToSend.put(user_name, 0);
+                }
+            }
+        }
+
+        dataMapOfMoneyToSend.entrySet().removeIf(entries->entries.getValue()==0);
+        dataMapOfMoneyToReceive.entrySet().removeIf(entries->entries.getValue()==0);
     }
 }

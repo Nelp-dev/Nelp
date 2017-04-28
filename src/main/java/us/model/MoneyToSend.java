@@ -11,8 +11,8 @@ public class MoneyToSend {
     @Column(name="money_to_send")
     private int amount;
     @OneToOne
-    @JoinColumn(name="giver_id")
-    private User giver;
+    @JoinColumn(name="sender_id")
+    private User sender;
     @OneToOne
     @JoinColumn(name="recipient_id")
     private User recipient;
@@ -21,9 +21,9 @@ public class MoneyToSend {
     private Meeting meeting;
 
     public MoneyToSend() { }
-    public MoneyToSend(int amount, User giver, User recipient, Meeting meeting) {
+    public MoneyToSend(int amount, User sender, User recipient, Meeting meeting) {
         this.amount = amount;
-        this.giver = giver;
+        this.sender = sender;
         this.recipient = recipient;
         this.meeting = meeting;
     }
@@ -44,12 +44,12 @@ public class MoneyToSend {
         this.amount = money;
     }
 
-    public User getGiver() {
-        return giver;
+    public User getSender() {
+        return sender;
     }
 
-    public void setGiver(User giver) {
-        this.giver = giver;
+    public void setSender(User sender) {
+        this.sender = sender;
     }
 
     public User getRecipient() {
