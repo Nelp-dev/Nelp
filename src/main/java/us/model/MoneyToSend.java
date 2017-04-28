@@ -16,16 +16,16 @@ public class MoneyToSend {
     @OneToOne
     @JoinColumn(name="recipient_id")
     private User recipient;
-    @OneToOne
-    @JoinColumn(name="meeting_id")
-    private Meeting meeting;
+    @ManyToOne
+    @JoinColumn(name="payment_id")
+    private Payment payment;
 
     public MoneyToSend() { }
-    public MoneyToSend(int amount, User sender, User recipient, Meeting meeting) {
+    public MoneyToSend(int amount, User sender, User recipient, Payment payment) {
         this.amount = amount;
         this.sender = sender;
         this.recipient = recipient;
-        this.meeting = meeting;
+        this.payment = payment;
     }
 
     public int getId() {
@@ -60,11 +60,11 @@ public class MoneyToSend {
         this.recipient = recipient;
     }
 
-    public Meeting getMeeting() {
-        return meeting;
+    public Payment getPayment() {
+        return payment;
     }
 
-    public void setMeeting(Meeting meeting) {
-        this.meeting = meeting;
+    public void setPayment(Payment payment) {
+        this.payment = payment;
     }
 }

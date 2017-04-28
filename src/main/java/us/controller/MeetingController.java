@@ -166,9 +166,10 @@ public class MeetingController {
         Participation participation = participationRepository.findOne(new ParticipationId(id, findPayment.getSsoId()));
         participation.removePayment(findPayment);
 
+
+        removeMoneyToSend(findPayment);
         paymentRepository.delete(paymentId);
 
-        // Todo : Remove MoneyToSend
         return "redirect:/meetings/" + id;
     }
 
@@ -214,14 +215,21 @@ public class MeetingController {
         int price_per_person = amount / (others.size() + 1);
 
         for(User user : others) {
-            MoneyToSend moneyToSend = new MoneyToSend(price_per_person, user, payer, meeting);
+            MoneyToSend moneyToSend = new MoneyToSend(price_per_person, user, payer, payment);
             moneyToSendRepository.save(moneyToSend);
+        }
+    }
+
+    private void removeMoneyToSend(Payment payment) {
+        List<MoneyToSend> moneyToSendList = moneyToSendRepository.findByPayment(payment);
+        for(MoneyToSend moneyToSend : moneyToSendList) {
+            moneyToSendRepository.delete(moneyToSend);
         }
     }
 
     private HashMap<String, Integer> getMapOfMoneyToSend(Meeting meeting, User user) {
         HashMap<String, Integer> expenseMap = new HashMap<>();
-        List<MoneyToSend> moneyToSendList = moneyToSendRepository.findByMeeting(meeting);
+        List<MoneyToSend> moneyToSendList = getMoneyToSendListByMeeting(meeting);
 
         for(MoneyToSend moneyToSend : moneyToSendList) {
             if(moneyToSend.getSender().getSsoId().equals(user.getSsoId())) {
@@ -237,7 +245,7 @@ public class MeetingController {
 
     private HashMap<String, Integer> getMapOfMoneyToReceive(Meeting meeting, User user) {
         HashMap<String, Integer> expenseMap = new HashMap<>();
-        List<MoneyToSend> moneyToSendList = moneyToSendRepository.findByMeeting(meeting);
+        List<MoneyToSend> moneyToSendList = getMoneyToSendListByMeeting(meeting);
 
         for(MoneyToSend moneyToSend : moneyToSendList) {
             if(moneyToSend.getRecipient().getSsoId().equals(user.getSsoId())) {
@@ -272,5 +280,15 @@ public class MeetingController {
 
         dataMapOfMoneyToSend.entrySet().removeIf(entries->entries.getValue()==0);
         dataMapOfMoneyToReceive.entrySet().removeIf(entries->entries.getValue()==0);
+    }
+
+    private List<MoneyToSend> getMoneyToSendListByMeeting(Meeting meeting){
+        List<MoneyToSend> moneyToSendList = new ArrayList<>();
+        for(MoneyToSend moneyToSend : moneyToSendRepository.findAll()){
+            if(moneyToSend.getPayment().getParticipation().getMeeting().getId() == meeting.getId()){
+                moneyToSendList.add(moneyToSend);
+            }
+        }
+        return moneyToSendList;
     }
 }
