@@ -86,30 +86,30 @@
             </tbody>
         </table>
         <strong>모임신청 URL : </strong><a id="meeting_url" th:href="${meeting.url}" th:text="${meeting.url}"></a>
-        <a id="url_copy_btn" href="#" class="btn btn-info btn-sm">
+        <button id="url_copy_btn" class="btn btn-info btn-sm">
             <span class="glyphicon glyphicon-copy"><span class="popup_text" id="url_copy_btn_popup"></span></span>
-        </a>
+        </button>
         <button th:if="${isParticipated}" type="button" id="add_payment_btn" class="btn pull-right btn-success" data-toggle="modal" data-target="#add_payment_dialog">결제내역 추가</button>
 
         <div class="modal fade" id="add_payment_dialog" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-sm">
 
-                <form class="modal-content" th:object="${payment}" action="#" th:action="@{'/meetings/' + ${meeting.id} + '/payment'}" method="post">
+                <form class="modal-content" th:action="@{'/meetings/' + ${meeting.id} + '/payment'}" method="post">
                     <div class="modal-header">
                         <button id="add_payment_dialog_close_btn" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         <h5 class="modal-title">결제내역 추가</h5>
                     </div>
                     <div class="modal-body">
                         <span>결제자 : </span>
-                        <select id="payment_owner_name" th:field="*{ssoId}">
+                        <select id="payment_owner_name" th:field="${temp_user.ssoId}">
                             <option th:each="participant : ${participant_list}" th:value="${participant.ssoId}" th:text="${participant.name}"></option>
                         </select>
                         <br/>
                         <span>결제금액</span>
-                        <input id="payment_amount" class="form-control" th:field="*{amount}" type="number"/>
+                        <input id="payment_amount" class="form-control" th:field="${payment.amount}" type="number"/>
                         <br/>
                         <span>상세내역</span>
-                        <input id="payment_name" class="form-control" th:field="*{name}" type="text"/>
+                        <input id="payment_name" class="form-control" th:field="${payment.name}" type="text"/>
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-default" type="submit">OK</button>
@@ -162,22 +162,22 @@
     </div>
     <div class="modal fade" id="update_payment_dialog" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-sm">
-            <form class="modal-content" th:object="${payment}" action="#" th:action="@{'/meetings/' + ${meeting.id}}" method="post">
+            <form class="modal-content" th:action="@{'/meetings/' + ${meeting.id}}" method="post">
                 <div class="modal-header">
                     <button id="update_payment_dialog_close_btn" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h5 class="modal-title">결제내역 수정</h5>
                 </div>
                 <div class="modal-body">
                     <span>결제자 : </span>
-                    <select id="update_payment_owner_name" th:field="*{ssoId}">
+                    <select id="update_payment_owner_name" th:field="${temp_user.ssoId}">
                         <option th:each="participant : ${participant_list}" th:value="${participant.ssoId}" th:text="${participant.name}"></option>
                     </select>
                     <br/>
                     <span>결제금액</span>
-                    <input id="update_payment_amount" class="form-control" th:field="*{amount}" type="number"/>
+                    <input id="update_payment_amount" class="form-control" th:field="${payment.amount}" type="number"/>
                     <br/>
                     <span>상세내역</span>
-                    <input id="update_payment_name" class="form-control" th:field="*{name}" type="text"/>
+                    <input id="update_payment_name" class="form-control" th:field="${payment.name}" type="text"/>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-default" type="submit">OK</button>
@@ -188,22 +188,22 @@
     </div>
     <div class="modal fade" id="remove_payment_dialog" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-sm">
-            <form class="modal-content" th:object="${payment}" action="#" th:action="@{'/meetings/' + ${meeting.id}}" method="post">
+            <form class="modal-content" th:action="@{'/meetings/' + ${meeting.id}}" method="post">
                 <div class="modal-header">
                     <button id="remove_payment_dialog_close_btn" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h5 class="modal-title">결제내역 삭제</h5>
                 </div>
                 <div class="modal-body">
                     <span>결제자 : </span>
-                    <select id="remove_payment_owner_name" th:field="*{ssoId}" disabled="disabled">
+                    <select id="remove_payment_owner_name" th:field="${temp_user.ssoId}" disabled="disabled">
                         <option th:each="participant : ${participant_list}" th:value="${participant.ssoId}" th:text="${participant.name}"></option>
                     </select>
                     <br/>
                     <span>결제금액</span>
-                    <input id="remove_payment_amount" class="form-control" th:field="*{amount}" type="number" readonly="readonly"/>
+                    <input id="remove_payment_amount" class="form-control" th:field="${payment.amount}" type="number" readonly="readonly"/>
                     <br/>
                     <span>상세내역</span>
-                    <input id="remove_payment_name" class="form-control" th:field="*{name}" type="text" readonly="readonly"/>
+                    <input id="remove_payment_name" class="form-control" th:field="${payment.name}" type="text" readonly="readonly"/>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-default" type="submit">OK</button>
