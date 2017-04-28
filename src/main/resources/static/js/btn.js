@@ -46,3 +46,22 @@ $("#update_payment_dialog").on('show.bs.modal', function (event) {
     var updateURL = $(location).attr('pathname') + '/payment/' + paymentId + '/update';
     modal.find('.modal-content').attr("action",updateURL);
 });
+
+
+$("#remove_payment_dialog").on('show.bs.modal', function (event) {
+    var payment = $(event.relatedTarget);
+    var payer = payment.attr("value");
+    var paymentId = payment.attr("id");
+    var paymentName = payment.attr("name");
+    var paymentAmount = payment.attr("data");
+
+    $("#remove_payment_owner_name").val(payer);
+    $("#remove_payment_amount").val(paymentAmount);
+    $("#remove_payment_name").val(paymentName);
+
+    var modal = $(this);
+    var updateURL = $(location).attr('pathname') + '/payment/' + paymentId + '/remove';
+    modal.find('.modal-content').attr("action",updateURL);
+});
+
+

@@ -72,10 +72,12 @@
                         <div th:each="payment : ${all_payment_list}">
                             <div th:if="${payment.isOwner(participant.ssoId)}">
                                 <div th:if="${isParticipated}">
-                                    <div style="font-size:15px;" data-toggle="modal" data-target="#update_payment_dialog" th:id="${payment.id}" th:value="${participant.ssoId}" th:name="${payment.name}" th:data="${payment.amount}" th:text="${payment.amount} + ' ' + ${payment.name}"></div>
+                                    <span style="font-size:15px;" th:text="${payment.amount} + ' ' + ${payment.name}"></span>
+                                    <button type="button" data-toggle="modal" data-target="#update_payment_dialog" class="btn btn-default btn-sm" th:id="${payment.id}" th:value="${participant.ssoId}" th:name="${payment.name}" th:data="${payment.amount}"><span class="glyphicon glyphicon-pencil"></span></button>
+                                    <button type="button" data-toggle="modal" data-target="#remove_payment_dialog" class="btn btn-default btn-sm" th:id="${payment.id}" th:value="${participant.ssoId}" th:name="${payment.name}" th:data="${payment.amount}"><span class="glyphicon glyphicon-remove"></span></button>
                                 </div>
                                 <div th:unless="${isParticipated}">
-                                    <div style="font-size:15px;" th:text="${payment.amount} + ' ' + ${payment.name}"></div>
+                                    <span style="font-size:15px;" th:text="${payment.amount} + ' ' + ${payment.name}"></span>
                                 </div>
                             </div>
                         </div>
@@ -176,6 +178,32 @@
                     <br/>
                     <span>상세내역</span>
                     <input id="update_payment_name" class="form-control" th:field="*{name}" type="text"/>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" type="submit">OK</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal fade" id="remove_payment_dialog" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <form class="modal-content" th:object="${payment}" action="#" th:action="@{'/meetings/' + ${meeting.id}}" method="post">
+                <div class="modal-header">
+                    <button id="remove_payment_dialog_close_btn" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h5 class="modal-title">결제내역 삭제</h5>
+                </div>
+                <div class="modal-body">
+                    <span>결제자 : </span>
+                    <select id="remove_payment_owner_name" th:field="*{ssoId}" disabled="disabled">
+                        <option th:each="participant : ${participant_list}" th:value="${participant.ssoId}" th:text="${participant.name}"></option>
+                    </select>
+                    <br/>
+                    <span>결제금액</span>
+                    <input id="remove_payment_amount" class="form-control" th:field="*{amount}" type="number" readonly="readonly"/>
+                    <br/>
+                    <span>상세내역</span>
+                    <input id="remove_payment_name" class="form-control" th:field="*{name}" type="text" readonly="readonly"/>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-default" type="submit">OK</button>

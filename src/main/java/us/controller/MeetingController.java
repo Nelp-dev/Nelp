@@ -138,6 +138,7 @@ public class MeetingController {
         updateMoneyToSend(addPayment);
         return "redirect:/meetings/" + id;
     }
+
     @PostMapping(value = "/{id}/payment/{paymentId}/update")
     public String updatePayment(@PathVariable int id,@PathVariable int paymentId, Payment payment) {
         Payment findPayment = paymentRepository.findOne(paymentId);
@@ -157,6 +158,20 @@ public class MeetingController {
         updateMoneyToSend(findPayment);
         return "redirect:/meetings/" + id;
     }
+
+    @PostMapping(value = "/{id}/payment/{paymentId}/remove")
+    public String removePayment(@PathVariable int id,@PathVariable int paymentId, Payment payment) {
+        Payment findPayment = paymentRepository.findOne(paymentId);
+
+        Participation participation = participationRepository.findOne(new ParticipationId(id, findPayment.getSsoId()));
+        participation.removePayment(findPayment);
+
+        paymentRepository.delete(paymentId);
+
+        // Todo : Remove MoneyToSend
+        return "redirect:/meetings/" + id;
+    }
+
 
     private void participate(Meeting meeting, User user) {
         Participation participation = new Participation(meeting, user);
