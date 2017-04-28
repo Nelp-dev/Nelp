@@ -137,6 +137,7 @@ public class MeetingController {
         paymentRepository.save(addPayment);
 
         updateMoneyToSend(addPayment);
+
         return "redirect:/meetings/" + id;
     }
 
@@ -146,6 +147,7 @@ public class MeetingController {
 
         Participation oldParticipation = participationRepository.findOne(new ParticipationId(id, findPayment.getUserSsoId()));
         oldParticipation.removePayment(findPayment);
+        removeMoneyToSend(findPayment);
 
         findPayment.setAmount(payment.getAmount());
         findPayment.setName(payment.getName());
