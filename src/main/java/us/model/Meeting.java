@@ -18,8 +18,6 @@ public class Meeting {
     private String time;
     @Column(name="date")
     private String date;
-    @Column(name="url")
-    private String url;
     @OneToMany(mappedBy="meeting")
     private List<Participation> participationList = new ArrayList<>();
 
@@ -62,15 +60,6 @@ public class Meeting {
 
     public void setTime(String time) {
         this.time = time;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl() {
-        String base_url = "http://localhost:8080/meetings/";
-        this.url = base_url + Integer.toString(this.id);
     }
 
     public String getDate() {
