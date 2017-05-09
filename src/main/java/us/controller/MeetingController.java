@@ -41,8 +41,6 @@ public class MeetingController {
             return "redirect:/";
         }
         meetingRepository.save(meeting);
-        meeting.setUrl();
-        meetingRepository.save(meeting);
 
         User user = (User)session.getAttribute("user");
         User findUser = userRepository.findOne(user.getSsoId());
