@@ -58,7 +58,17 @@ public class AuthenticationController {
         userRepository.save(user);
         return "redirect:/";
     }
-
+  
+    @GetMapping("/mypage")
+    public String getMyPageForm(Model model,HttpSession session){
+        User user = (User)session.getAttribute("user");
+        if (user != null) {
+            model.addAttribute("user",user);
+            return "mypage";
+        } else {
+            return "redirect:/login";
+    }
+      
     public String getTemporaryPassword() {
         int index = 0;
         int PASSWORD_LENGTH = 7;

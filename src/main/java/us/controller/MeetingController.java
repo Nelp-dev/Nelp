@@ -52,7 +52,6 @@ public class MeetingController {
     @GetMapping(value = "/{id}")
     public String getDetailMeeting(@PathVariable int id, Model model, HttpSession session) {
         Meeting meeting = meetingRepository.findOne(id);
-
         User user = (User)session.getAttribute("user");
 
         HashMap<String, Integer> money_to_send_map = new HashMap<>();

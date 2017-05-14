@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <head th:include="include/header :: header"/>
+    <link href="/css/mypage.css" rel="stylesheet" />
+    <title>Mypage</title>
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" th:href="@{/}">Nelp</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#">Dashboard</a></li>
+                <li><a href="#">Settings</a></li>
+                <li><a href="#">Profile</a></li>
+                <li><a href="#">Help</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-sidebar">
+                <li class="active"><a href="#">나의 정보</a></li>
+                <li><a href="#">개인정보수정하기</a></li>
+                <li><a href="/changepassword">비밀번호바꾸기</a></li>
+            </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <h1 class="page-header">나의 정보</h1>
+            <div class="row placeholders">
+                <div class="col-xs-6 col-sm-3 placeholder">
+                    <h4>ID</h4>
+                    <span class="text" th:text="${user.ssoId}"></span>
+                </div>
+                <div class="col-xs-6 col-sm-3 placeholder">
+                    <h4>이름</h4>
+                    <span class="text" th:text="${user.name}"></span>
+                </div>
+                <div class="col-xs-6 col-sm-3 placeholder">
+                    <h4>은행</h4>
+                    <span class="text" th:text="${user.account_bank}"></span>
+                </div>
+                <div class="col-xs-6 col-sm-3 placeholder">
+                    <h4>계좌번호</h4>
+                    <span class="text" th:text="${user.account_number}"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<head th:include="include/js :: script"></head>
+</body>
+</html>
