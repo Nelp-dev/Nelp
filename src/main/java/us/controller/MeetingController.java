@@ -41,8 +41,6 @@ public class MeetingController {
             return "redirect:/";
         }
         meetingRepository.save(meeting);
-        meeting.setUrl();
-        meetingRepository.save(meeting);
 
         User user = (User)session.getAttribute("user");
         User findUser = userRepository.findOne(user.getSsoId());
@@ -54,7 +52,6 @@ public class MeetingController {
     @GetMapping(value = "/{id}")
     public String getDetailMeeting(@PathVariable int id, Model model, HttpSession session) {
         Meeting meeting = meetingRepository.findOne(id);
-
         User user = (User)session.getAttribute("user");
 
         HashMap<String, Integer> money_to_send_map = new HashMap<>();
