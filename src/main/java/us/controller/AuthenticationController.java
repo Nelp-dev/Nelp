@@ -30,7 +30,7 @@ public class AuthenticationController {
             return "login";
         }
         session.setAttribute("user", foundUser);
-        
+
         return "redirect:/";
     }
 
@@ -58,6 +58,27 @@ public class AuthenticationController {
         userRepository.save(user);
         return "redirect:/";
     }
+
+    @GetMapping(value = "/password")
+    public String findPassword(Model model) {
+        model.addAttribute("user", new User());
+        model.addAttribute("isPasswordFindFail", false);
+        return "find_password";
+    }
+
+    @PostMapping(value = "/password")
+    public String findPassword(User findUser, Model model) {
+        for (User getUser : userRepository.findAll()) {
+            if (findUser.getSsoId().equals(getUser.getSsoId())) {
+                if (findUser.getName().equals(getUser.getName()))
+                    return "login";
+                else
+                    break;
+            }
+        }
+        model.addAttribute("isPasswordFindFail", true);
+        return "find_password";
+    }
   
     @GetMapping("/mypage")
     public String getMyPageForm(Model model,HttpSession session){
@@ -67,6 +88,7 @@ public class AuthenticationController {
             return "mypage";
         } else {
             return "redirect:/login";
+        }
     }
       
     public String getTemporaryPassword() {
