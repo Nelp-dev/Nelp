@@ -62,6 +62,8 @@ public class MeetingController {
             money_to_send_map = getMapOfMoneyToSend(meeting, user);
             money_to_receive_map = getMapOfMoneyToReceive(meeting, user);
             mergeMapsOfMoneyToHandle(money_to_send_map, money_to_receive_map);
+            money_to_send_map = changeSsoidToName(money_to_send_map);
+            money_to_receive_map = changeSsoidToName(money_to_receive_map);
         } else {
             model.addAttribute("isParticipated", false);
         }
@@ -233,11 +235,11 @@ public class MeetingController {
 
         for(MoneyToSend moneyToSend : moneyToSendList) {
             if(moneyToSend.getSender().getSsoId().equals(user.getSsoId())) {
-                String user_name = moneyToSend.getRecipient().getName();
+                String user_ssoid = moneyToSend.getRecipient().getSsoId();
                 int amount = moneyToSend.getAmount();
-                if(expenseMap.containsKey(user_name))
-                    amount += expenseMap.get(user_name);
-                expenseMap.put(user_name, amount);
+                if(expenseMap.containsKey(user_ssoid))
+                    amount += expenseMap.get(user_ssoid);
+                expenseMap.put(user_ssoid, amount);
             }
         }
         return expenseMap;
@@ -249,11 +251,11 @@ public class MeetingController {
 
         for(MoneyToSend moneyToSend : moneyToSendList) {
             if(moneyToSend.getRecipient().getSsoId().equals(user.getSsoId())) {
-                String user_name = moneyToSend.getSender().getName();
+                String user_ssoid = moneyToSend.getSender().getSsoId();
                 int amount = moneyToSend.getAmount();
-                if(expenseMap.containsKey(user_name))
-                    amount += expenseMap.get(user_name);
-                expenseMap.put(user_name, amount);
+                if(expenseMap.containsKey(user_ssoid))
+                    amount += expenseMap.get(user_ssoid);
+                expenseMap.put(user_ssoid, amount);
             }
         }
 
@@ -262,18 +264,18 @@ public class MeetingController {
 
     private void mergeMapsOfMoneyToHandle(HashMap<String, Integer> dataMapOfMoneyToSend, HashMap<String, Integer> dataMapOfMoneyToReceive) {
         for(Map.Entry<String, Integer> entry : dataMapOfMoneyToSend.entrySet()) {
-            String user_name = entry.getKey();
+            String user_ssoid = entry.getKey();
             int send_amount = entry.getValue();
-            if(dataMapOfMoneyToReceive.containsKey(user_name)) {
-                int receive_amount = dataMapOfMoneyToReceive.get(user_name);
+            if(dataMapOfMoneyToReceive.containsKey(user_ssoid)) {
+                int receive_amount = dataMapOfMoneyToReceive.get(user_ssoid);
                 int amount_diff = send_amount - receive_amount;
                 if(amount_diff >= 0) {
-                    dataMapOfMoneyToSend.put(user_name, amount_diff);
-                    dataMapOfMoneyToReceive.put(user_name, 0);
+                    dataMapOfMoneyToSend.put(user_ssoid, amount_diff);
+                    dataMapOfMoneyToReceive.put(user_ssoid, 0);
                 }
                 else {
-                    dataMapOfMoneyToReceive.put(user_name, -1 * amount_diff);
-                    dataMapOfMoneyToSend.put(user_name, 0);
+                    dataMapOfMoneyToReceive.put(user_ssoid, -1 * amount_diff);
+                    dataMapOfMoneyToSend.put(user_ssoid, 0);
                 }
             }
         }
@@ -290,5 +292,14 @@ public class MeetingController {
             }
         }
         return moneyToSendList;
+    }
+
+    private HashMap<String, Integer> changeSsoidToName(HashMap<String, Integer> dataMapOfMoneyToHandle) {
+        HashMap<String, Integer> mapByName = new HashMap<>();
+        for(Map.Entry<String, Integer> entry : dataMapOfMoneyToHandle.entrySet()) {
+            User user = userRepository.findOne(entry.getKey());
+            mapByName.put(user.getName(), entry.getValue());
+        }
+        return mapByName;
     }
 }
