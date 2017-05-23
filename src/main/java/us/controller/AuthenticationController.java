@@ -61,6 +61,8 @@ public class AuthenticationController {
 
     @GetMapping("/changepassword")
     public String changePassword(Model model, HttpSession session) {
+
+
         User user = (User)session.getAttribute("user");
         if (user != null) {
             model.addAttribute("tempUser", new User());
