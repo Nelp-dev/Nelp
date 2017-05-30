@@ -73,7 +73,7 @@ public class MeetingController {
         model.addAttribute("all_payment_list", getPaymentList(meeting));
         model.addAttribute("money_to_send_map", money_to_send_map);
         model.addAttribute("money_to_receive_map", money_to_receive_map);
-        model.addAttribute("temp_user", new User());
+        model.addAttribute("payer", new User());
         return "detail_meeting";
     }
 
@@ -125,14 +125,14 @@ public class MeetingController {
     }
 
     @PostMapping(value = "/{id}/payment")
-    public String addPayment(@PathVariable int id, Payment payment, User temp_user) {
+    public String addPayment(@PathVariable int id, Payment payment, User payer) {
         Payment addPayment = new Payment();
         addPayment.setAmount(payment.getAmount());
         addPayment.setName(payment.getName());
-        Participation participation = participationRepository.findOne(new ParticipationId(id, temp_user.getSsoId()));
+        Participation participation = participationRepository.findOne(new ParticipationId(id, payer.getSsoId()));
         participation.addPayment(addPayment);
         addPayment.setParticipation(participation);
-        addPayment.setUserSsoId(temp_user.getSsoId());
+        addPayment.setUserSsoId(payer.getSsoId());
         paymentRepository.save(addPayment);
 
         updateMoneyToSend(addPayment);
