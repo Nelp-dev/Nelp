@@ -101,7 +101,7 @@
                     </div>
                     <div class="modal-body">
                         <span>결제자 : </span>
-                        <select id="payment_owner_name" th:field="${temp_user.ssoId}">
+                        <select id="payment_owner_name" th:field="${payer.ssoId}">
                             <option th:each="participant : ${participant_list}" th:value="${participant.ssoId}" th:text="${participant.name}"></option>
                         </select>
                         <br/>
@@ -174,7 +174,7 @@
                 </div>
                 <div class="modal-body">
                     <span>결제자 : </span>
-                    <select id="update_payment_owner_name" th:field="${temp_user.ssoId}">
+                    <select id="update_payment_owner_name" th:field="${payer.ssoId}">
                         <option th:each="participant : ${participant_list}" th:value="${participant.ssoId}" th:text="${participant.name}"></option>
                     </select>
                     <br/>
@@ -205,7 +205,7 @@
                 </div>
                 <div class="modal-body">
                     <span>결제자 : </span>
-                    <select id="remove_payment_owner_name" th:field="${temp_user.ssoId}" disabled="disabled">
+                    <select id="remove_payment_owner_name" th:field="${payer.ssoId}" disabled="disabled">
                         <option th:each="participant : ${participant_list}" th:value="${participant.ssoId}" th:text="${participant.name}"></option>
                     </select>
                     <br/>
