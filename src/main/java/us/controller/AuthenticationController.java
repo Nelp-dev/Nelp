@@ -1,6 +1,8 @@
 package us.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +16,9 @@ import javax.servlet.http.HttpSession;
 public class AuthenticationController {
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private JavaMailSender javaMailSender;
 
     @GetMapping("/login")
     public String getLoginForm(Model model){
@@ -102,8 +107,13 @@ public class AuthenticationController {
     public String findPassword(User findUser, Model model) {
         for (User getUser : userRepository.findAll()) {
             if (findUser.getSsoId().equals(getUser.getSsoId())) {
-                if (findUser.getName().equals(getUser.getName()))
+                if (findUser.getName().equals(getUser.getName())) {
+                    findUser.setPassword(getTemporaryPassword());
+                    userRepository.save(findUser);
+                    sendEmail(findUser.getSsoId(), "[Nelp] 임시 비밀번호 입니다.", "임시 비밀번호는 " +
+                        findUser.getPassword() + " 입니다.");
                     return "login";
+                }
                 else
                     break;
             }
@@ -153,5 +163,13 @@ public class AuthenticationController {
             }
         }
         return false;
+    }
+
+    private void sendEmail(String to, String subject, String text) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(to);
+        message.setSubject(subject);
+        message.setText(text);
+        javaMailSender.send(message);
     }
 }
