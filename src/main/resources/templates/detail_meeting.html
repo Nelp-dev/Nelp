@@ -113,7 +113,7 @@
                         <br/>
                         <span style="font-size: 14px;">돈을 지불할 사람</span>
                         <div>
-                            <input style="vertical-align: top; margin-right: 5px;" th:each="participant : ${participant_list}" type="checkbox" name="payment_userList" th:value="${participant.ssoId}" th:text="${participant.name}" checked="checked"/>
+                            <input style="vertical-align: top; margin-right: 5px;" th:each="participant : ${payment_participant_list}" type="checkbox" name="payment_participant_list" th:value="${participant.ssoId}" th:text="${participant.name}" checked="checked"/>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -186,7 +186,7 @@
                     <br/>
                     <span style="font-size: 14px;">돈을 지불할 사람</span>
                     <div>
-                        <input style="vertical-align: top; margin-right: 5px;" th:each="participant : ${participant_list}" type="checkbox" name="payment_userList" th:value="${participant.ssoId}" th:text="${participant.name}" checked="checked"/>
+                        <input style="vertical-align: top; margin-right: 5px;" th:each="participant : ${payment_participant_list}" type="checkbox" name="payment_participant_list" th:value="${participant.ssoId}" th:text="${participant.name}" checked="checked"/>
                     </div>
                 </div>
                 <div class="modal-footer">
